@@ -29,7 +29,8 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "format:check": "prettier --check .",
     "format": "npx prettier --write .",
-    "prepare": "cd .. && husky install frontend/.husky"
+    "prepare": "cd .. && husky install frontend/.husky",
+    "typecheck": "tsc --noemit"
   },
   "eslintConfig": {
     "extends": [
