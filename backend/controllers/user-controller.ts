@@ -1,6 +1,5 @@
 import { RequestHandler } from 'express';
 import { activate, registerService } from '../services/user-service';
-import mongoose from 'mongoose';
 import User from '../models/User';
 import config from '../config';
 
@@ -14,10 +13,7 @@ export const registerUser: RequestHandler = async (req, res, next) => {
     });
     return res.send(userData);
   } catch (e) {
-    if (e instanceof mongoose.Error.ValidationError) {
-      return res.status(400).send(e);
-    }
-    return next(e);
+    next(e);
   }
 };
 

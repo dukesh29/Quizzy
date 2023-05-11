@@ -2,13 +2,13 @@ import User from '../models/User';
 import * as crypto from 'crypto';
 import { sendActivationMail } from './mail-service';
 import { generateTokens, saveToken } from './token-service';
+import { ApiError } from '../exceptions/api-error';
 
 export const registerService = async (email: string, password: string, displayName: string) => {
   const candidate = await User.findOne({ email });
   if (candidate) {
-    throw new Error(`Пользователь с данным почтовым адресом уже существует!`);
+    throw new ApiError(401, 'Пользователь с данным email уже существует!');
   }
-
   const activationLink = crypto.randomUUID();
   await sendActivationMail(email, `${process.env.API_URL}/api/users/activate/${activationLink}`);
 
@@ -26,7 +26,7 @@ export const registerService = async (email: string, password: string, displayNa
 export const activate = async (activationLink: string) => {
   const user = await User.findOne({ activationLink: activationLink });
   if (!user) {
-    throw new Error('Некорректная ссылка активации');
+    throw new ApiError(401, 'Данная ссылка не действительна!');
   }
   user.isActivated = true;
   await user.save();

@@ -4,6 +4,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import config from './config';
 import usersRouter from './routers/users';
+import { globalErrorHandler } from './middlewares/error-middleware';
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api/users', usersRouter);
+app.use(globalErrorHandler);
 
 const run = async () => {
   mongoose.set('strictQuery', false);

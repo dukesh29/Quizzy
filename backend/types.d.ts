@@ -15,3 +15,8 @@ export interface UserPayload {
   isActivated: boolean;
   displayName: string;
 }
+
+interface ErrorObject {
+  code: number;
+  message: string;
+}
