@@ -7,10 +7,11 @@ import {
   refresh,
   registerUser,
 } from '../controllers/user-controller';
+import { registrationValidations } from '../services/user-service';
 
 const usersRouter = express.Router();
 
-usersRouter.post('/registration', registerUser);
+usersRouter.post('/registration', registrationValidations, registerUser);
 usersRouter.post('/login', loginUser);
 usersRouter.post('/logout', logoutUser);
 usersRouter.get('/activate/:link', activateUser);

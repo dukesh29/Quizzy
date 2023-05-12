@@ -1,13 +1,8 @@
-interface ErrorResponse {
-  code: string;
-  message: string;
-}
-
 export class ApiError extends Error {
   status: number;
-  errors: ErrorResponse[];
+  errors: [];
 
-  constructor(status: number, message: string, errors?: ErrorResponse[]) {
+  constructor(status: number, message: string, errors?: []) {
     super(message);
     this.status = status;
     this.errors = errors ? errors : [];
@@ -17,7 +12,7 @@ export class ApiError extends Error {
     return new ApiError(401, 'Пользователь не авторизован');
   }
 
-  static BadRequest(message: string, errors: ErrorResponse[]) {
+  static BadRequest(message: string, errors: []) {
     return new ApiError(400, message, errors);
   }
 }
