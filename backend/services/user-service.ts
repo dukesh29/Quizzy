@@ -48,3 +48,24 @@ export const activate = async (activationLink: string) => {
   user.isActivated = true;
   await user.save();
 };
+
+export const loginService = async (email: string, password: string) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw ApiError.BadRequest('Пользователь с таким email не найден!');
+  }
+
+  const isMatch = await user.checkPassword(password);
+
+  if (!isMatch) {
+    throw ApiError.BadRequest('Неверный email или пароль!');
+  }
+
+  const newUser = user.toJSON();
+  const tokens = generateTokens({ ...newUser });
+  await saveToken(newUser._id.toString(), tokens.refreshToken);
+  return {
+    ...tokens,
+    user: newUser,
+  };
+};

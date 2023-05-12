@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { activate, registerService } from '../services/user-service';
+import { activate, loginService, registerService } from '../services/user-service';
 import User from '../models/User';
 import config from '../config';
 import { validationResult } from 'express-validator';
@@ -26,7 +26,13 @@ export const registerUser: RequestHandler = async (req, res, next) => {
 
 export const loginUser: RequestHandler = async (req, res, next) => {
   try {
-    //
+    const { email, password } = req.body;
+    const userData = await loginService(email, password);
+    res.cookie('refreshToken', userData.refreshToken, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    });
+    return res.send(userData);
   } catch (e) {
     next(e);
   }
