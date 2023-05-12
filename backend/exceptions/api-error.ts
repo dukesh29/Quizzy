@@ -1,11 +1,11 @@
 export class ApiError extends Error {
   status: number;
-  errors: [];
+  errors: [] | null;
 
   constructor(status: number, message: string, errors?: []) {
     super(message);
     this.status = status;
-    this.errors = errors ? errors : [];
+    this.errors = errors ? errors : null;
   }
 
   static UnauthorizedError() {

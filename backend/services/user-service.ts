@@ -101,3 +101,7 @@ export const refreshTokenService = async (refreshToken: string) => {
     user: newUser,
   };
 };
+
+export const getAllUsersService = async () => {
+  return User.find();
+};

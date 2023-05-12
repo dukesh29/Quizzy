@@ -5,7 +5,7 @@ import { JWTPayload, UserPayload } from '../types';
 
 export const generateTokens = (payload: UserPayload) => {
   const accessToken = jwt.sign(payload, config.jwt.jwtAccessSecret, { expiresIn: '30m' });
-  const refreshToken = jwt.sign(payload, config.jwt.jwtAccessSecret, { expiresIn: '30d' });
+  const refreshToken = jwt.sign(payload, config.jwt.jwtRefreshSecret, { expiresIn: '30d' });
   return {
     accessToken,
     refreshToken,

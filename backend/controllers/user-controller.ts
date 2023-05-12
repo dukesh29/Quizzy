@@ -1,12 +1,12 @@
 import { RequestHandler } from 'express';
 import {
   activate,
+  getAllUsersService,
   loginService,
   logoutService,
   refreshTokenService,
   registerService,
 } from '../services/user-service';
-import User from '../models/User';
 import config from '../config';
 import { validationResult } from 'express-validator';
 import { ApiError } from '../exceptions/api-error';
@@ -80,7 +80,7 @@ export const refresh: RequestHandler = async (req, res, next) => {
 
 export const getUsers: RequestHandler = async (req, res, next) => {
   try {
-    const users = await User.find();
+    const users = await getAllUsersService();
     res.send(users);
   } catch (e) {
     next(e);
