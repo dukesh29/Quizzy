@@ -1,5 +1,11 @@
 import { RequestHandler } from 'express';
-import { activate, loginService, registerService } from '../services/user-service';
+import {
+  activate,
+  loginService,
+  logoutService,
+  refreshTokenService,
+  registerService,
+} from '../services/user-service';
 import User from '../models/User';
 import config from '../config';
 import { validationResult } from 'express-validator';
@@ -39,11 +45,15 @@ export const loginUser: RequestHandler = async (req, res, next) => {
 };
 export const logoutUser: RequestHandler = async (req, res, next) => {
   try {
-    //
+    const { refreshToken } = req.cookies;
+    await logoutService(refreshToken);
+    res.clearCookie('refreshToken');
+    return res.status(200).send('Вы успешно вышли из  аккаунта!');
   } catch (e) {
     next(e);
   }
 };
+
 export const activateUser: RequestHandler = async (req, res, next) => {
   try {
     const activationLink = req.params.link;
@@ -56,7 +66,13 @@ export const activateUser: RequestHandler = async (req, res, next) => {
 
 export const refresh: RequestHandler = async (req, res, next) => {
   try {
-    //
+    const { refreshToken } = req.cookies;
+    const userData = await refreshTokenService(refreshToken);
+    res.cookie('refreshToken', userData.refreshToken, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    });
+    return res.send(userData);
   } catch (e) {
     next(e);
   }

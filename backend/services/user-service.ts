@@ -1,7 +1,13 @@
 import User from '../models/User';
 import * as crypto from 'crypto';
 import { sendActivationMail } from './mail-service';
-import { generateTokens, saveToken } from './token-service';
+import {
+  findToken,
+  generateTokens,
+  removeToken,
+  saveToken,
+  validateRefreshToken,
+} from './token-service';
 import { ApiError } from '../exceptions/api-error';
 import { body } from 'express-validator';
 
@@ -61,6 +67,32 @@ export const loginService = async (email: string, password: string) => {
     throw ApiError.BadRequest('Неверный email или пароль!');
   }
 
+  const newUser = user.toJSON();
+  const tokens = generateTokens({ ...newUser });
+  await saveToken(newUser._id.toString(), tokens.refreshToken);
+  return {
+    ...tokens,
+    user: newUser,
+  };
+};
+
+export const logoutService = async (refreshToken: string) => {
+  await removeToken(refreshToken);
+};
+
+export const refreshTokenService = async (refreshToken: string) => {
+  if (!refreshToken) {
+    throw ApiError.UnauthorizedError();
+  }
+  const userData = validateRefreshToken(refreshToken);
+  const tokenFromDB = await findToken(refreshToken);
+  if (!userData || !tokenFromDB) {
+    throw ApiError.UnauthorizedError();
+  }
+  const user = await User.findById(userData._id);
+  if (!user) {
+    throw ApiError.BadRequest('Такой пользователь не найден!');
+  }
   const newUser = user.toJSON();
   const tokens = generateTokens({ ...newUser });
   await saveToken(newUser._id.toString(), tokens.refreshToken);
