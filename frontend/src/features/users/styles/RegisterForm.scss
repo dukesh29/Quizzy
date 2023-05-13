@@ -1,76 +1,76 @@
 @import "styles.css";
 
-.screen-login {
+.screen-register {
   background: linear-gradient(90deg, #5D54A4, #7C78B8);
   position: relative;
-  height: 600px;
+  margin-top: 14px;
+  height: 650px;
   width: 360px;
   box-shadow: 0 0 24px #5C5696;
 }
 
-.screen-login__content {
+.screen-register__content {
   z-index: 1;
   position: relative;
   height: 100%;
 
-  .login {
+  .register {
     padding: 156px 30px 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    .login__main {
+    .register__main {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 5px;
 
-      .login__icon {
+      .register__icon {
         color: #7875B5;
       }
 
-      .login__title {
+      .register__title {
         color: #3c3a59;
-        margin-left: 6px;
       }
     }
 
-    .login__field {
-      padding: 20px 0 0;
+    .register__field {
+      padding: 20px 0 0 0;
       position: relative;
 
-      .login__icon {
+      .register__icon {
         position: absolute;
         top: 29px;
         color: #7875B5;
       }
     }
 
-    .login__input {
+    .register__input {
       border: none;
       border-bottom: 2px solid #D1D1D4;
       background: none;
       padding: 10px 10px 10px 24px;
       font-weight: 500;
-      transition: .2s;
       min-width: 300px;
+      transition: .2s;
     }
 
-    .login__input:active,
-    .login__input:focus,
-    .login__input:hover {
-      outline: none;
-      border-bottom-color: #6A679E;
-    }
-
-    .login__visibilityIcon {
+    .register__visibilityIcon {
       position: absolute;
       top: 29px;
       right: 12px;
       color: #fff;
     }
 
-    .login__submit {
+    .register__input:active,
+    .register__input:focus,
+    .register__input:hover {
+      outline: none;
+      border-bottom-color: #6A679E;
+    }
+
+    .register__submit {
       background: #fff;
       font-size: 14px;
       margin-top: 18px;
@@ -80,43 +80,42 @@
       text-transform: uppercase;
       text-align: center;
       font-weight: 700;
-      align-items: center;
-      width: 67%;
       color: #4C489D;
       box-shadow: 0 2px 2px #5C5696;
       cursor: pointer;
       transition: .2s;
+      align-self: center;
     }
 
-    .login__submit:not(:disabled):active,
-    .login__submit:not(:disabled):focus,
-    .login__submit:not(:disabled):hover {
+    .register__submit:not(:disabled):active,
+    .register__submit:not(:disabled):focus,
+    .register__submit:not(:disabled):hover {
       border-color: #6A679E;
       background-color: #6A679E;
       color: white;
       outline: none;
     }
 
-    .login__submit:disabled {
+    .register__submit:disabled {
       cursor: not-allowed;
     }
 
-    .login__submit:disabled:hover {
+    .register__submit:disabled:hover {
       color: black;
       background-color: gainsboro;
     }
   }
 
-  .social-login {
+  .social-register {
     position: absolute;
     height: 120px;
-    width: 210px;
+    width: 220px;
     text-align: center;
-    bottom: 0;
+    bottom: 25px;
     right: 0;
     color: #fff;
 
-    .social-login__register {
+    .social-register__register {
       color: #FFFFFF;
       font-weight: bold;
 
@@ -133,18 +132,16 @@
       gap: 10px;
     }
 
-    .social-login__icon {
+    .social-register__icon {
       color: #fff;
       text-decoration: none;
       border-radius: 50%;
     }
 
-    .social-login__icon:hover {
+    .social-register__icon:hover {
       transform: scale(1.5);
       transition: ease .2s;
     }
   }
 }
-
-
 

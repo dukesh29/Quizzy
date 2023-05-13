@@ -17,7 +17,7 @@ export const createUser = createAsyncThunk<void, UserMutation, { rejectValue: Va
   'users/create',
   async (registerMutation, { rejectWithValue }) => {
     try {
-      await axiosApi.post<RegisterResponse>('/users', registerMutation);
+      await axiosApi.post<RegisterResponse>('/users/registration', registerMutation);
     } catch (e) {
       if (isAxiosError(e) && e.response && e.response.status === 400) {
         return rejectWithValue(e.response.data as ValidationError);
