@@ -7,6 +7,9 @@ export interface IUser {
   activationLink: string;
   role: string;
   displayName: string;
+  avatar?: string;
+  googleID?: string;
+  facebookID?: string;
 }
 
 export interface UserPayload {
@@ -14,6 +17,7 @@ export interface UserPayload {
   email: string;
   isActivated: boolean;
   displayName: string;
+  avatar?: string;
 }
 
 export interface JWTPayload {
@@ -22,6 +26,7 @@ export interface JWTPayload {
   isActivated: boolean;
   role: string;
   displayName: string;
+  avatar?: string;
   iat: number;
   exp: number;
 }
