@@ -10,6 +10,7 @@ import {
 import config from '../config';
 import { validationResult } from 'express-validator';
 import { ApiError } from '../exceptions/api-error';
+import mongoose from 'mongoose';
 
 export const registerUser: RequestHandler = async (req, res, next) => {
   try {
@@ -25,8 +26,11 @@ export const registerUser: RequestHandler = async (req, res, next) => {
       httpOnly: true,
     });
     return res.send(userData);
-  } catch (e) {
-    next(e);
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      return res.status(400).send(error);
+    }
+    next(error);
   }
 };
 

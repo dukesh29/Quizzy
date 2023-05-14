@@ -28,10 +28,6 @@ const registrationValidators = [
 export const registrationValidations = [...registrationValidators];
 
 export const registerService = async (email: string, password: string, displayName: string) => {
-  const candidate = await User.findOne({ email });
-  if (candidate) {
-    throw new ApiError(401, 'Пользователь с данным email уже существует!');
-  }
   const activationLink = crypto.randomUUID();
   await sendActivationMail(email, `${process.env.API_URL}/api/users/activate/${activationLink}`);
 
