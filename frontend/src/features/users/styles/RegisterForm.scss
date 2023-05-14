@@ -52,7 +52,7 @@
       background: none;
       padding: 10px 10px 10px 24px;
       font-weight: 500;
-      min-width: 300px;
+      width: 300px;
       transition: .2s;
     }
 
@@ -142,6 +142,20 @@
       transform: scale(1.5);
       transition: ease .2s;
     }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .screen-register {
+    width: 280px;
+  }
+
+  .register__input {
+    max-width: 200px;
+  }
+
+  .register__submit {
+    font-size: 10px;
   }
 }
 

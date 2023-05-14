@@ -7,18 +7,32 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import GoogleIcon from '@mui/icons-material/Google';
 import VisibilityOffSharpIcon from '@mui/icons-material/VisibilityOffSharp';
 import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { login } from './usersThunk';
 import { selectLoginError, selectLoginLoading } from './usersSlice';
 import { CircularProgress } from '@mui/material';
+import { toast } from 'react-toastify';
 import './styles/LoginForm.scss';
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const loginError = useAppSelector(selectLoginError);
   const loading = useAppSelector(selectLoginLoading);
+
+  const notifySuccess = () =>
+    toast('Добро пожаловать в Quizzy!', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+
   const {
     register,
     handleSubmit,
@@ -33,7 +47,9 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<LoginMutation> = async (data) => {
     await dispatch(login(data)).unwrap();
+    notifySuccess();
     reset();
+    navigate('/');
   };
 
   return (

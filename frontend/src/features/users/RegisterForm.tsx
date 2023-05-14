@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { UserMutation } from '../../types';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ExitToAppSharpIcon from '@mui/icons-material/ExitToAppSharp';
 import MailIcon from '@mui/icons-material/Mail';
 import KeyIcon from '@mui/icons-material/Key';
@@ -14,12 +14,36 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { createUser } from './usersThunk';
 import { CircularProgress } from '@mui/material';
 import { selectRegisterError, selectRegisterLoading } from './usersSlice';
+import { toast } from 'react-toastify';
 import './styles/RegisterForm.scss';
 
 const RegisterForm = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const loading = useAppSelector(selectRegisterLoading);
   const serverError = useAppSelector(selectRegisterError);
+  const notifySuccess = () =>
+    toast.success('Вы успешно зарегистрировались в Quizzy!', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+
+  const notifyFailure = () =>
+    toast.error('Что то пошло не так!', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+
   const {
     register,
     handleSubmit,
@@ -44,19 +68,22 @@ const RegisterForm = () => {
   const onSubmit: SubmitHandler<UserMutation> = async (data) => {
     try {
       await dispatch(createUser(data)).unwrap();
+      notifySuccess();
       reset();
+      navigate('/');
     } catch (error) {
+      notifyFailure();
       setError('email', {
         type: 'manual',
         message: getFieldError('email'),
       });
       setError('password', {
         type: 'manual',
-        message: getFieldError('email'),
+        message: getFieldError('password'),
       });
       setError('displayName', {
         type: 'manual',
-        message: getFieldError('email'),
+        message: getFieldError('displayName'),
       });
     }
   };

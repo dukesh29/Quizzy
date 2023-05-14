@@ -53,7 +53,7 @@
       padding: 10px 10px 10px 24px;
       font-weight: 500;
       transition: .2s;
-      min-width: 300px;
+      width: 300px;
     }
 
     .login__input:active,
@@ -146,5 +146,18 @@
   }
 }
 
+
+@media screen and (max-width: 480px) {
+  .screen-login {
+    max-width: 280px;
+  }
+
+  .login__input {
+    max-width: 200px;
+  }
+  .login__submit {
+    font-size: 10px;
+  }
+}
 
 
