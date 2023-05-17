@@ -8,7 +8,7 @@ export interface IUser {
   role: string;
   displayName: string;
   avatar?: string;
-  googleID?: string;
+  googleId?: string;
   facebookID?: string;
 }
 

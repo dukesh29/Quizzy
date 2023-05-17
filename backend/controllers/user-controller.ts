@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import {
   activate,
   getAllUsersService,
+  googleLoginService,
   loginService,
   logoutService,
   refreshTokenService,
@@ -24,8 +25,13 @@ export const registerUser: RequestHandler = async (req, res, next) => {
     res.cookie('refreshToken', userData.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
+      sameSite: 'strict',
     });
-    return res.send(userData);
+    const data = {
+      accessToken: userData.accessToken,
+      user: userData.user,
+    };
+    return res.send(data);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
       return res.status(400).send(error);
@@ -41,15 +47,38 @@ export const loginUser: RequestHandler = async (req, res, next) => {
     res.cookie('refreshToken', userData.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
+      sameSite: 'strict',
     });
-    return res.send(userData);
+    return res.send({
+      accessToken: userData.accessToken,
+      user: userData.user,
+    });
   } catch (e) {
     next(e);
   }
 };
+
+export const loginGoogleUser: RequestHandler = async (req, res, next) => {
+  try {
+    const googleAccessToken = req.body.accessToken;
+    const userData = await googleLoginService(googleAccessToken);
+    res.cookie('refreshToken', userData.refreshToken, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      sameSite: 'strict',
+    });
+    return res.send({
+      accessToken: userData.accessToken,
+      user: userData.user,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
 export const logoutUser: RequestHandler = async (req, res, next) => {
   try {
-    const { refreshToken } = req.cookies;
+    const refreshToken = req.cookies.refreshToken;
     await logoutService(refreshToken);
     res.clearCookie('refreshToken');
     return res.status(200).send('Вы успешно вышли из  аккаунта!');
@@ -70,13 +99,17 @@ export const activateUser: RequestHandler = async (req, res, next) => {
 
 export const refresh: RequestHandler = async (req, res, next) => {
   try {
-    const { refreshToken } = req.cookies;
+    const refreshToken = req.cookies.refreshToken;
     const userData = await refreshTokenService(refreshToken);
     res.cookie('refreshToken', userData.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
+      sameSite: 'strict',
     });
-    return res.send(userData);
+    return res.send({
+      accessToken: userData.accessToken,
+      user: userData.user,
+    });
   } catch (e) {
     next(e);
   }

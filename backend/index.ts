@@ -8,7 +8,7 @@ import { globalErrorHandler } from './middlewares/error-middleware';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: config.clientURL, credentials: true }));
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());

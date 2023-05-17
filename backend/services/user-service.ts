@@ -1,5 +1,4 @@
 import User from '../models/User';
-import * as crypto from 'crypto';
 import { sendActivationMail } from './mail-service';
 import {
   findToken,
@@ -10,17 +9,19 @@ import {
 } from './token-service';
 import { ApiError } from '../exceptions/api-error';
 import { body } from 'express-validator';
+import * as crypto from 'crypto';
+import axios from 'axios';
 
 const registrationValidators = [
   body('email').isEmail().withMessage('Неверный email! Введите правильный email!'),
   body('password')
-    .isLength({ min: 3, max: 32 })
+    .isLength({ min: 8, max: 32 })
     .withMessage('Пароль должен иметь от 3 до 32 символов!')
     .isString()
     .withMessage('Пароль должен быть строкой!'),
   body('displayName')
-    .isLength({ min: 2, max: 50 })
-    .withMessage('Никнейм должен иметь от 2 до 50 символов!')
+    .isLength({ min: 3, max: 50 })
+    .withMessage('Никнейм должен иметь от 3 до 50 символов!')
     .isString()
     .withMessage('Никнейм должен быть строкой!'),
 ];
@@ -30,7 +31,6 @@ export const registrationValidations = [...registrationValidators];
 export const registerService = async (email: string, password: string, displayName: string) => {
   const activationLink = crypto.randomUUID();
   await sendActivationMail(email, `${process.env.API_URL}/api/users/activate/${activationLink}`);
-
   const user = await User.create({ email, password, displayName, activationLink });
   const newUser = user.toJSON();
   const tokens = generateTokens({ ...newUser });
@@ -66,6 +66,46 @@ export const loginService = async (email: string, password: string) => {
   const newUser = user.toJSON();
   const tokens = generateTokens({ ...newUser });
   await saveToken(newUser._id.toString(), tokens.refreshToken);
+  return {
+    ...tokens,
+    user: newUser,
+  };
+};
+
+export const googleLoginService = async (googleAccessToken: string) => {
+  const response = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+    headers: {
+      Authorization: `Bearer ${googleAccessToken}`,
+    },
+  });
+
+  if (!response) {
+    throw ApiError.BadRequest('Неверный токен от Google!');
+  }
+
+  const { email, sub, name, picture } = response.data;
+
+  if (!email) {
+    throw ApiError.BadRequest('Недостоверные данные от Google!');
+  }
+
+  let user = await User.findOne({ googleId: sub });
+
+  if (!user) {
+    user = await User.create({
+      email,
+      password: crypto.randomUUID(),
+      displayName: name,
+      googleId: sub,
+      avatar: picture,
+      isActivated: true,
+    });
+  }
+
+  const newUser = user.toJSON();
+  const tokens = generateTokens({ ...newUser });
+  await saveToken(newUser._id.toString(), tokens.refreshToken);
+
   return {
     ...tokens,
     user: newUser,

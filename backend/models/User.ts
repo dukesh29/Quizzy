@@ -48,7 +48,7 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
     required: true,
   },
   avatar: String,
-  googleID: String,
+  googleId: String,
   facebookID: String,
 });
 
