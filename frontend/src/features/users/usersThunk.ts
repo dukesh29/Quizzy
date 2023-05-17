@@ -2,8 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   GlobalError,
   LoginMutation,
-  RegisterResponse,
-  User,
   UserMutation,
   UserResponse,
   ValidationError,
@@ -13,26 +11,43 @@ import { isAxiosError } from 'axios';
 import { RootState } from '../../app/store';
 import { unsetUser } from './usersSlice';
 
-export const createUser = createAsyncThunk<void, UserMutation, { rejectValue: ValidationError }>(
-  'users/create',
-  async (registerMutation, { rejectWithValue }) => {
+export const createUser = createAsyncThunk<
+  UserResponse,
+  UserMutation,
+  { rejectValue: ValidationError }
+>('users/create', async (registerMutation, { rejectWithValue }) => {
+  try {
+    const response = await axiosApi.post<UserResponse>('/users/registration', registerMutation);
+    return response.data;
+  } catch (e) {
+    if (isAxiosError(e) && e.response && e.response.status === 400) {
+      return rejectWithValue(e.response.data as ValidationError);
+    }
+    throw e;
+  }
+});
+
+export const login = createAsyncThunk<UserResponse, LoginMutation, { rejectValue: GlobalError }>(
+  'users/login',
+  async (loginMutation, { rejectWithValue }) => {
     try {
-      await axiosApi.post<RegisterResponse>('/users/registration', registerMutation);
+      const response = await axiosApi.post<UserResponse>('/users/login', loginMutation);
+      return response.data;
     } catch (e) {
-      if (isAxiosError(e) && e.response && e.response.status === 400) {
-        return rejectWithValue(e.response.data as ValidationError);
-      }
+      if (isAxiosError(e) && e.response && e.response.status === 400)
+        return rejectWithValue(e.response.data as GlobalError);
+
       throw e;
     }
   },
 );
 
-export const login = createAsyncThunk<User, LoginMutation, { rejectValue: GlobalError }>(
-  'users/login',
-  async (loginMutation, { rejectWithValue }) => {
+export const googleLogin = createAsyncThunk<UserResponse, string, { rejectValue: GlobalError }>(
+  'users/googleLogin',
+  async (accessToken, { rejectWithValue }) => {
     try {
-      const response = await axiosApi.post<UserResponse>('/users/login', loginMutation);
-      return response.data.user;
+      const response = await axiosApi.post<UserResponse>('/users/google', { accessToken });
+      return response.data;
     } catch (e) {
       if (isAxiosError(e) && e.response && e.response.status === 400)
         return rejectWithValue(e.response.data as GlobalError);

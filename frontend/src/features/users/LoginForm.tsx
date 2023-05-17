@@ -10,10 +10,11 @@ import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { login } from './usersThunk';
+import { googleLogin, login } from './usersThunk';
 import { selectLoginError, selectLoginLoading } from './usersSlice';
 import { CircularProgress } from '@mui/material';
 import { toast } from 'react-toastify';
+import { useGoogleLogin } from '@react-oauth/google';
 import './styles/LoginForm.scss';
 
 const LoginForm = () => {
@@ -21,6 +22,17 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const loginError = useAppSelector(selectLoginError);
   const loading = useAppSelector(selectLoginLoading);
+
+  const handleGoogleIconClick = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      if (tokenResponse) {
+        await dispatch(googleLogin(tokenResponse.access_token)).unwrap();
+      } else {
+        return;
+      }
+    },
+    onError: () => console.log('Login Failed!'),
+  });
 
   const notifySuccess = () =>
     toast('Добро пожаловать в Quizzy!', {
@@ -107,10 +119,10 @@ const LoginForm = () => {
               зарегистрироваться
             </Link>
             <div className="social-icons">
-              <a href="#" className="social-login__icon">
+              <a className="social-login__icon">
                 <FacebookIcon className="fb" />
               </a>
-              <a href="#" className="social-login__icon">
+              <a onClick={() => handleGoogleIconClick()} className="social-login__icon">
                 <GoogleIcon className="gg" />
               </a>
             </div>

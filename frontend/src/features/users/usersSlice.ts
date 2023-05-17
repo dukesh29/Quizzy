@@ -1,10 +1,11 @@
 import { GlobalError, User, ValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
-import { createUser, login } from './usersThunk';
+import { createUser, googleLogin, login } from './usersThunk';
 import { RootState } from '../../app/store';
 
 interface UsersState {
   user: User | null;
+  accessToken: string;
   loginError: GlobalError | null;
   registerError: ValidationError | null;
   loginLoading: boolean;
@@ -13,6 +14,7 @@ interface UsersState {
 
 const initialState: UsersState = {
   user: null,
+  accessToken: '',
   loginError: null,
   registerError: null,
   loginLoading: false,
@@ -25,6 +27,10 @@ const usersSlice = createSlice({
   reducers: {
     unsetUser: (state) => {
       state.user = null;
+      state.accessToken = '';
+    },
+    setToken: (state, action) => {
+      state.accessToken = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -32,20 +38,37 @@ const usersSlice = createSlice({
       state.loginError = null;
       state.loginLoading = true;
     });
-    builder.addCase(login.fulfilled, (state, { payload: user }) => {
+    builder.addCase(login.fulfilled, (state, { payload: userResponse }) => {
       state.loginLoading = false;
-      state.user = user;
+      state.user = userResponse.user;
+      state.accessToken = userResponse.accessToken;
     });
     builder.addCase(login.rejected, (state, { payload: error }) => {
       state.loginError = error || null;
       state.loginLoading = false;
     });
+    builder.addCase(googleLogin.pending, (state) => {
+      state.loginError = null;
+      state.loginLoading = true;
+    });
+    builder.addCase(googleLogin.fulfilled, (state, { payload: userResponse }) => {
+      state.loginLoading = false;
+      state.user = userResponse.user;
+      state.accessToken = userResponse.accessToken;
+    });
+    builder.addCase(googleLogin.rejected, (state, { payload: error }) => {
+      state.loginError = error || null;
+      state.loginLoading = false;
+    });
 
     builder.addCase(createUser.pending, (state) => {
+      state.registerError = null;
       state.registerLoading = true;
     });
-    builder.addCase(createUser.fulfilled, (state) => {
+    builder.addCase(createUser.fulfilled, (state, { payload: userResponse }) => {
       state.registerLoading = false;
+      state.user = userResponse.user;
+      state.accessToken = userResponse.accessToken;
     });
     builder.addCase(createUser.rejected, (state, { payload: error }) => {
       state.registerError = error || null;
@@ -62,4 +85,4 @@ export const selectLoginError = (state: RootState) => state.users.loginError;
 export const selectRegisterLoading = (state: RootState) => state.users.registerLoading;
 export const selectRegisterError = (state: RootState) => state.users.registerError;
 
-export const { unsetUser } = usersSlice.actions;
+export const { unsetUser, setToken } = usersSlice.actions;

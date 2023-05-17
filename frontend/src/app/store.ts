@@ -7,7 +7,7 @@ import { usersReducer } from '../features/users/usersSlice';
 const usersPersistConfig = {
   key: 'Quizzy:users',
   storage,
-  whitelist: ['user'],
+  whitelist: ['user', 'accessToken'],
 };
 
 const rootReducer = combineReducers({

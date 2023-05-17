@@ -11,17 +11,30 @@ import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 import VisibilityOffSharpIcon from '@mui/icons-material/VisibilityOffSharp';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { createUser } from './usersThunk';
+import { createUser, googleLogin } from './usersThunk';
 import { CircularProgress } from '@mui/material';
 import { selectRegisterError, selectRegisterLoading } from './usersSlice';
 import { toast } from 'react-toastify';
 import './styles/RegisterForm.scss';
+import { useGoogleLogin } from '@react-oauth/google';
 
 const RegisterForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const loading = useAppSelector(selectRegisterLoading);
   const serverError = useAppSelector(selectRegisterError);
+
+  const handleGoogleIconClick = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      if (tokenResponse) {
+        await dispatch(googleLogin(tokenResponse.access_token)).unwrap();
+      } else {
+        return;
+      }
+    },
+    onError: () => console.log('Login Failed!'),
+  });
+
   const notifySuccess = () =>
     toast.success('Вы успешно зарегистрировались в Quizzy!', {
       position: 'top-right',
@@ -119,8 +132,8 @@ const RegisterForm = () => {
                 type={isVisible ? 'text' : 'password'}
                 {...register('password', {
                   required: 'Поле обязательно для введения!',
-                  minLength: { value: 8, message: 'Минимум 8 символов!' },
-                  maxLength: { value: 20, message: 'Максимум 20 символов!' },
+                  minLength: { value: 5, message: 'Минимум 5 символов!' },
+                  maxLength: { value: 30, message: 'Максимум 30 символов!' },
                 })}
                 className="register__input"
                 placeholder="Пароль"
@@ -140,8 +153,8 @@ const RegisterForm = () => {
                 type="text"
                 {...register('displayName', {
                   required: 'Поле обязательно для введения!',
-                  minLength: { value: 5, message: 'Минимум 5 символов!' },
-                  maxLength: { value: 20, message: 'Максимум 20 символов!' },
+                  minLength: { value: 3, message: 'Минимум 3 символа!' },
+                  maxLength: { value: 30, message: 'Максимум 30 символов!' },
                 })}
                 className="register__input"
                 placeholder="Никнейм"
@@ -158,10 +171,10 @@ const RegisterForm = () => {
               Уже зарегистрированы?
             </Link>
             <div className="social-icons">
-              <a href="#" className="social-register__icon">
+              <Link to="/google" className="social-register__icon">
                 <FacebookIcon className="fb" />
-              </a>
-              <a href="#" className="social-register__icon">
+              </Link>
+              <a onClick={() => handleGoogleIconClick()} className="social-register__icon">
                 <GoogleIcon className="gg" />
               </a>
             </div>
