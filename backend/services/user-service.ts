@@ -15,13 +15,13 @@ import axios from 'axios';
 const registrationValidators = [
   body('email').isEmail().withMessage('Неверный email! Введите правильный email!'),
   body('password')
-    .isLength({ min: 8, max: 32 })
-    .withMessage('Пароль должен иметь от 3 до 32 символов!')
+    .isLength({ min: 5, max: 30 })
+    .withMessage('Пароль должен иметь от 5 до 30 символов!')
     .isString()
     .withMessage('Пароль должен быть строкой!'),
   body('displayName')
-    .isLength({ min: 3, max: 50 })
-    .withMessage('Никнейм должен иметь от 3 до 50 символов!')
+    .isLength({ min: 3, max: 30 })
+    .withMessage('Никнейм должен иметь от 3 до 30 символов!')
     .isString()
     .withMessage('Никнейм должен быть строкой!'),
 ];

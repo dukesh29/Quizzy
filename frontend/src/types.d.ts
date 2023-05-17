@@ -19,12 +19,7 @@ export interface LoginMutation {
 }
 
 export interface UserResponse {
-  message: string;
-  user: User;
-}
-
-export interface RegisterResponse {
-  message: string;
+  accessToken: string;
   user: User;
 }
 
