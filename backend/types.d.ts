@@ -30,3 +30,14 @@ export interface JWTPayload {
   iat: number;
   exp: number;
 }
+
+export type ProfileSuccessResponse = {
+  id?: string;
+  email?: string;
+  name?: string;
+  picture: {
+    data: {
+      url: string;
+    };
+  };
+};

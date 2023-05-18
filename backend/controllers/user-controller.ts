@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import {
   activate,
+  facebookLoginService,
   getAllUsersService,
   googleLoginService,
   loginService,
@@ -60,6 +61,22 @@ export const loginGoogleUser: RequestHandler = async (req, res, next) => {
   try {
     const googleAccessToken = req.body.accessToken;
     const userData = await googleLoginService(googleAccessToken);
+    res.cookie('refreshToken', userData.refreshToken, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    });
+    return res.send({
+      accessToken: userData.accessToken,
+      user: userData.user,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+export const loginFacebookUser: RequestHandler = async (req, res, next) => {
+  try {
+    const userData = await facebookLoginService(req.body.data);
     res.cookie('refreshToken', userData.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,

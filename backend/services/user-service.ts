@@ -11,6 +11,7 @@ import { ApiError } from '../exceptions/api-error';
 import { body } from 'express-validator';
 import * as crypto from 'crypto';
 import axios from 'axios';
+import { ProfileSuccessResponse } from '../types';
 
 const registrationValidators = [
   body('email').isEmail().withMessage('Неверный email! Введите правильный email!'),
@@ -98,6 +99,43 @@ export const googleLoginService = async (googleAccessToken: string) => {
       displayName: name,
       googleId: sub,
       avatar: picture,
+      isActivated: true,
+    });
+  }
+
+  const newUser = user.toJSON();
+  const tokens = generateTokens({ ...newUser });
+  await saveToken(newUser._id.toString(), tokens.refreshToken);
+
+  return {
+    ...tokens,
+    user: newUser,
+  };
+};
+
+export const facebookLoginService = async (data: ProfileSuccessResponse) => {
+  if (!data) {
+    throw ApiError.BadRequest('Неверные данные от Facebook!');
+  }
+
+  const {
+    email,
+    id,
+    name,
+    picture: {
+      data: { url },
+    },
+  } = data;
+
+  let user = await User.findOne({ facebookID: id });
+
+  if (!user) {
+    user = await User.create({
+      email,
+      password: crypto.randomUUID(),
+      displayName: name,
+      facebookID: id,
+      avatar: url,
       isActivated: true,
     });
   }
