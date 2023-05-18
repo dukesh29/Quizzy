@@ -3,18 +3,16 @@ import { LoginMutation } from '../../types';
 import LoginIcon from '@mui/icons-material/Login';
 import MailIcon from '@mui/icons-material/Mail';
 import KeyIcon from '@mui/icons-material/Key';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import GoogleIcon from '@mui/icons-material/Google';
 import VisibilityOffSharpIcon from '@mui/icons-material/VisibilityOffSharp';
 import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { googleLogin, login } from './usersThunk';
+import { login } from './usersThunk';
 import { selectLoginError, selectLoginLoading } from './usersSlice';
 import { CircularProgress } from '@mui/material';
 import { toast } from 'react-toastify';
-import { useGoogleLogin } from '@react-oauth/google';
+import SocialSiteLogin from './components/SocialSiteLogin';
 import './styles/LoginForm.scss';
 
 const LoginForm = () => {
@@ -22,28 +20,6 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const loginError = useAppSelector(selectLoginError);
   const loading = useAppSelector(selectLoginLoading);
-
-  const handleGoogleIconClick = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      if (tokenResponse) {
-        await dispatch(googleLogin(tokenResponse.access_token)).unwrap();
-      } else {
-        return;
-      }
-    },
-    onError: () => console.log('Login Failed!'),
-  });
-
-  const notifySuccess = () =>
-    toast('Добро пожаловать в Quizzy!', {
-      position: 'top-right',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    });
 
   const {
     register,
@@ -54,6 +30,17 @@ const LoginForm = () => {
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
+
+  const notifySuccess = () =>
+    toast.success('Добро пожаловать в Quizzy!', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -114,17 +101,12 @@ const LoginForm = () => {
             </button>
           </form>
           <div className="social-login">
-            <h3>Войти через или</h3>
+            <h3>Войти через соцсети или</h3>
             <Link to="/register" className="social-login__register">
               зарегистрироваться
             </Link>
             <div className="social-icons">
-              <a className="social-login__icon">
-                <FacebookIcon className="fb" />
-              </a>
-              <a onClick={() => handleGoogleIconClick()} className="social-login__icon">
-                <GoogleIcon className="gg" />
-              </a>
+              <SocialSiteLogin isLogin />
             </div>
           </div>
         </div>

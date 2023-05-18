@@ -124,25 +124,6 @@
         text-decoration: none;
       }
     }
-
-    .social-icons {
-      margin-top: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .social-login__icon {
-      color: #fff;
-      text-decoration: none;
-      border-radius: 50%;
-    }
-
-    .social-login__icon:hover {
-      transform: scale(1.5);
-      transition: ease .2s;
-    }
   }
 }
 

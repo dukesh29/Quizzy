@@ -4,36 +4,23 @@ import { Link, useNavigate } from 'react-router-dom';
 import ExitToAppSharpIcon from '@mui/icons-material/ExitToAppSharp';
 import MailIcon from '@mui/icons-material/Mail';
 import KeyIcon from '@mui/icons-material/Key';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import GoogleIcon from '@mui/icons-material/Google';
 import AccessibilityNewSharpIcon from '@mui/icons-material/AccessibilityNewSharp';
 import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 import VisibilityOffSharpIcon from '@mui/icons-material/VisibilityOffSharp';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { createUser, googleLogin } from './usersThunk';
+import { createUser } from './usersThunk';
 import { CircularProgress } from '@mui/material';
 import { selectRegisterError, selectRegisterLoading } from './usersSlice';
 import { toast } from 'react-toastify';
+import SocialSiteLogin from './components/SocialSiteLogin';
 import './styles/RegisterForm.scss';
-import { useGoogleLogin } from '@react-oauth/google';
 
 const RegisterForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const loading = useAppSelector(selectRegisterLoading);
   const serverError = useAppSelector(selectRegisterError);
-
-  const handleGoogleIconClick = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      if (tokenResponse) {
-        await dispatch(googleLogin(tokenResponse.access_token)).unwrap();
-      } else {
-        return;
-      }
-    },
-    onError: () => console.log('Login Failed!'),
-  });
 
   const notifySuccess = () =>
     toast.success('Вы успешно зарегистрировались в Quizzy!', {
@@ -166,17 +153,12 @@ const RegisterForm = () => {
             </button>
           </form>
           <div className="social-register">
-            <h3>Войти через или</h3>
+            <h3>Войти через соцсети или</h3>
             <Link to="/login" className="social-register__register">
               Уже зарегистрированы?
             </Link>
             <div className="social-icons">
-              <Link to="/google" className="social-register__icon">
-                <FacebookIcon className="fb" />
-              </Link>
-              <a onClick={() => handleGoogleIconClick()} className="social-register__icon">
-                <GoogleIcon className="gg" />
-              </a>
+              <SocialSiteLogin />
             </div>
           </div>
         </div>
