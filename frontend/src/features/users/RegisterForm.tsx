@@ -153,10 +153,10 @@ const RegisterForm = () => {
             </button>
           </form>
           <div className="social-register">
-            <h3>Войти через соцсети или</h3>
             <Link to="/login" className="social-register__register">
               Уже зарегистрированы?
             </Link>
+            <h4>Войти через</h4>
             <div className="social-icons">
               <SocialSiteLogin />
             </div>

@@ -3,8 +3,8 @@
 .screen-register {
   background: linear-gradient(90deg, #5D54A4, #7C78B8);
   position: relative;
-  margin-top: 14px;
-  height: 650px;
+  margin-top: 10px;
+  height: 600px;
   width: 360px;
   box-shadow: 0 0 24px #5C5696;
 }
@@ -15,7 +15,7 @@
   height: 100%;
 
   .register {
-    padding: 156px 30px 60px;
+    padding: 150px 30px 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -108,16 +108,18 @@
 
   .social-register {
     position: absolute;
-    height: 120px;
-    width: 220px;
+    height: 150px;
+    width: 190px;
     text-align: center;
-    bottom: 25px;
+    bottom: -30px;
     right: 0;
     color: #fff;
 
     .social-register__register {
+      display: inline-block;
       color: #FFFFFF;
       font-weight: bold;
+      margin-bottom: 10px;
 
       &:hover {
         text-decoration: none;

@@ -101,10 +101,10 @@ const LoginForm = () => {
             </button>
           </form>
           <div className="social-login">
-            <h3>Войти через соцсети или</h3>
             <Link to="/register" className="social-login__register">
-              зарегистрироваться
+              Зарегистрироваться или
             </Link>
+            <h4>Войти через </h4>
             <div className="social-icons">
               <SocialSiteLogin isLogin />
             </div>
