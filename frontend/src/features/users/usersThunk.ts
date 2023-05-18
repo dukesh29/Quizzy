@@ -10,6 +10,7 @@ import axiosApi from '../../axios';
 import { isAxiosError } from 'axios';
 import { RootState } from '../../app/store';
 import { unsetUser } from './usersSlice';
+import { ProfileSuccessResponse } from '@greatsumini/react-facebook-login';
 
 export const createUser = createAsyncThunk<
   UserResponse,
@@ -56,6 +57,22 @@ export const googleLogin = createAsyncThunk<UserResponse, string, { rejectValue:
     }
   },
 );
+
+export const facebookLogin = createAsyncThunk<
+  UserResponse,
+  ProfileSuccessResponse,
+  { rejectValue: GlobalError }
+>('users/facebookLogin', async (data, { rejectWithValue }) => {
+  try {
+    const response = await axiosApi.post<UserResponse>('/users/facebook', { data });
+    return response.data;
+  } catch (e) {
+    if (isAxiosError(e) && e.response && e.response.status === 400)
+      return rejectWithValue(e.response.data as GlobalError);
+
+    throw e;
+  }
+});
 
 export const logout = createAsyncThunk<void, void, { state: RootState }>(
   'users/logout',

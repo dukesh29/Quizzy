@@ -1,6 +1,6 @@
 import { GlobalError, User, ValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
-import { createUser, googleLogin, login } from './usersThunk';
+import { createUser, facebookLogin, googleLogin, login } from './usersThunk';
 import { RootState } from '../../app/store';
 
 interface UsersState {
@@ -32,6 +32,9 @@ const usersSlice = createSlice({
     setToken: (state, action) => {
       state.accessToken = action.payload;
     },
+    setThunkError: (state, action) => {
+      state.loginError = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => {
@@ -60,7 +63,19 @@ const usersSlice = createSlice({
       state.loginError = error || null;
       state.loginLoading = false;
     });
-
+    builder.addCase(facebookLogin.pending, (state) => {
+      state.loginError = null;
+      state.loginLoading = true;
+    });
+    builder.addCase(facebookLogin.fulfilled, (state, { payload: userResponse }) => {
+      state.loginLoading = false;
+      state.user = userResponse.user;
+      state.accessToken = userResponse.accessToken;
+    });
+    builder.addCase(facebookLogin.rejected, (state, { payload: error }) => {
+      state.loginError = error || null;
+      state.loginLoading = false;
+    });
     builder.addCase(createUser.pending, (state) => {
       state.registerError = null;
       state.registerLoading = true;
@@ -78,7 +93,7 @@ const usersSlice = createSlice({
 });
 
 export const usersReducer = usersSlice.reducer;
-export const { unsetUser, setToken } = usersSlice.actions;
+export const { unsetUser, setToken, setThunkError } = usersSlice.actions;
 
 export const selectUser = (state: RootState) => state.users.user;
 export const selectLoginLoading = (state: RootState) => state.users.loginLoading;
