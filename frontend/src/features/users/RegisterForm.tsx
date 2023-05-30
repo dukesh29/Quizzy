@@ -89,85 +89,83 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="container">
-      <div className="screen-register">
-        <div className="screen-register__content">
-          <form onSubmit={handleSubmit(onSubmit)} className="register">
-            <div className="register__main">
-              <h3 className="register__title"> Регистрация </h3>
-              <ExitToAppSharpIcon fontSize="large" className="register__icon" />
-            </div>
-            <div className="register__field">
-              <MailIcon fontSize="small" className="register__icon" />
-              <input
-                type="email"
-                {...register('email', {
-                  required: 'Поле обязательно для введения!',
-                  pattern: {
-                    value: /^\S+@\S+$/i,
-                    message: 'Неправильный email!',
-                  },
-                })}
-                className="register__input"
-                placeholder="Email"
-              />
-              {errors?.email && <div className="error">{errors.email.message}</div>}
-            </div>
-            <div className="register__field">
-              <KeyIcon fontSize="small" className="register__icon" />
-              <input
-                type={isVisible ? 'text' : 'password'}
-                {...register('password', {
-                  required: 'Поле обязательно для введения!',
-                  minLength: { value: 5, message: 'Минимум 5 символов!' },
-                  maxLength: { value: 30, message: 'Максимум 30 символов!' },
-                })}
-                className="register__input"
-                placeholder="Пароль"
-              />
-              <span onClick={() => setIsVisible(!isVisible)} className="register__visibilityIcon">
-                {isVisible ? (
-                  <VisibilitySharpIcon fontSize="small" />
-                ) : (
-                  <VisibilityOffSharpIcon fontSize="small" />
-                )}
-              </span>
-              {errors?.password && <div className="error">{errors.password.message}</div>}
-            </div>
-            <div className="register__field">
-              <AccessibilityNewSharpIcon fontSize="small" className="register__icon" />
-              <input
-                type="text"
-                {...register('displayName', {
-                  required: 'Поле обязательно для введения!',
-                  minLength: { value: 3, message: 'Минимум 3 символа!' },
-                  maxLength: { value: 30, message: 'Максимум 30 символов!' },
-                })}
-                className="register__input"
-                placeholder="Никнейм"
-              />
-              {errors?.displayName && <div className="error">{errors.displayName.message}</div>}
-            </div>
-            <button type="submit" disabled={!isValid} className="button register__submit">
-              {loading ? <CircularProgress /> : 'Зарегистрироваться'}
-            </button>
-          </form>
-          <div className="social-register">
-            <Link to="/login" className="social-register__register">
-              Уже зарегистрированы?
-            </Link>
-            <h4>Войти через</h4>
-            <div className="social-icons">
-              <SocialSiteLogin />
-            </div>
+    <div className="screen-register">
+      <div className="screen-register__content">
+        <form onSubmit={handleSubmit(onSubmit)} className="register">
+          <div className="register__main">
+            <h3 className="register__title"> Регистрация </h3>
+            <ExitToAppSharpIcon fontSize="large" className="register__icon" />
+          </div>
+          <div className="register__field">
+            <MailIcon fontSize="small" className="register__icon" />
+            <input
+              type="email"
+              {...register('email', {
+                required: 'Поле обязательно для введения!',
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: 'Неправильный email!',
+                },
+              })}
+              className="register__input"
+              placeholder="Email"
+            />
+            {errors?.email && <div className="error">{errors.email.message}</div>}
+          </div>
+          <div className="register__field">
+            <KeyIcon fontSize="small" className="register__icon" />
+            <input
+              type={isVisible ? 'text' : 'password'}
+              {...register('password', {
+                required: 'Поле обязательно для введения!',
+                minLength: { value: 5, message: 'Минимум 5 символов!' },
+                maxLength: { value: 30, message: 'Максимум 30 символов!' },
+              })}
+              className="register__input"
+              placeholder="Пароль"
+            />
+            <span onClick={() => setIsVisible(!isVisible)} className="register__visibilityIcon">
+              {isVisible ? (
+                <VisibilitySharpIcon fontSize="small" />
+              ) : (
+                <VisibilityOffSharpIcon fontSize="small" />
+              )}
+            </span>
+            {errors?.password && <div className="error">{errors.password.message}</div>}
+          </div>
+          <div className="register__field">
+            <AccessibilityNewSharpIcon fontSize="small" className="register__icon" />
+            <input
+              type="text"
+              {...register('displayName', {
+                required: 'Поле обязательно для введения!',
+                minLength: { value: 3, message: 'Минимум 3 символа!' },
+                maxLength: { value: 30, message: 'Максимум 30 символов!' },
+              })}
+              className="register__input"
+              placeholder="Никнейм"
+            />
+            {errors?.displayName && <div className="error">{errors.displayName.message}</div>}
+          </div>
+          <button type="submit" disabled={!isValid} className="button register__submit">
+            {loading ? <CircularProgress /> : 'Зарегистрироваться'}
+          </button>
+        </form>
+        <div className="social-register">
+          <Link to="/login" className="social-register__register">
+            Уже зарегистрированы?
+          </Link>
+          <h4>Войти через</h4>
+          <div className="social-icons">
+            <SocialSiteLogin />
           </div>
         </div>
-        <div className="screen__background">
-          <span className="screen__background__shape screen__background__shape4"></span>
-          <span className="screen__background__shape screen__background__shape3"></span>
-          <span className="screen__background__shape screen__background__shape2"></span>
-          <span className="screen__background__shape screen__background__shape1"></span>
-        </div>
+      </div>
+      <div className="screen__background">
+        <span className="screen__background__shape screen__background__shape4"></span>
+        <span className="screen__background__shape screen__background__shape3"></span>
+        <span className="screen__background__shape screen__background__shape2"></span>
+        <span className="screen__background__shape screen__background__shape1"></span>
       </div>
     </div>
   );
