@@ -1,0 +1,41 @@
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 70px;
+  padding: 10px 10px;
+  width: 100%;
+  background: repeating-linear-gradient(45deg, #C7C5F4, #C7C5F4 10px, #776BCC 10px, #776BCC 20px);
+  box-shadow: 0 -15px 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.footer__title {
+  color: white;
+  padding: 5px;
+  background-color: #000000;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.footer__social-connect {
+  display: block;
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+
+  &:hover {
+    transform: scale(120%);
+  }
+}
+
+.github {
+  background: url("../../../assets/github-mark.svg") no-repeat center left;
+  background-size: 30px 30px;
+}
+
+.linkedIn {
+  background: url("../../../assets/iconmonstr-linkedin-3.svg") no-repeat center left;
+  background-size: 30px 30px;
+}
+

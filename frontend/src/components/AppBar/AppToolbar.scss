@@ -1,0 +1,54 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  padding: 10px 10px;
+  width: 100%;
+  background: repeating-linear-gradient(45deg, #C7C5F4, #C7C5F4 10px, #776BCC 10px, #776BCC 20px);
+  box-shadow: 0 15px 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+  color: white;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #CCCCCC, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0, 0, 0, .1), 0 0 5px rgba(0, 0, 0, .1), 0 1px 3px rgba(0, 0, 0, .3), 0 3px 5px rgba(0, 0, 0, .2), 0 5px 10px rgba(0, 0, 0, .25), 0 10px 10px rgba(0, 0, 0, .2), 0 20px 20px rgba(0, 0, 0, .15);
+  font-weight: bold;
+  background: url("../../../assets/logo.png") no-repeat center left;
+  padding-left: 50px;
+  background-size: 40px 40px;
+  margin-left: 10px;
+  width: 40px;
+  height: 40px;
+}
+
+.navigation {
+  padding: 10px;
+
+  &__list {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+  }
+
+  &__item {
+    padding: 5px;
+    background-color: #000000;
+
+    &:hover {
+      transform: scale(110%);
+    }
+  }
+
+
+  &__link {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+  }
+}
