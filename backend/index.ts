@@ -13,6 +13,7 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api/users', usersRouter);
+app.use('/api/categories', usersRouter);
 app.use(globalErrorHandler);
 
 const run = async () => {
