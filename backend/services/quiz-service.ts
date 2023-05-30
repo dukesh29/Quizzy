@@ -39,6 +39,10 @@ export const createQuizService = async (
   return quiz;
 };
 
-export const editQuizService = (id: string) => {};
+export const editQuizService = (id: string) => {
+  return;
+};
 
-export const deleteQuizService = (id: string) => {};
+export const deleteQuizService = (id: string) => {
+  return;
+};
