@@ -41,3 +41,37 @@ export type ProfileSuccessResponse = {
     };
   };
 };
+
+export interface QuestionData {
+  type: string;
+  text: string;
+  image: Express.Multer.File | null;
+  answers: AnswerData[];
+}
+
+export interface QuestionDataFinal {
+  type: string;
+  text: string;
+  image: string | null;
+  answers: AnswerData[];
+}
+
+export interface AnswerData {
+  variant: string;
+  isCorrect: boolean;
+  description?: string;
+}
+
+export interface QuizData {
+  title: string;
+  category: Types.ObjectId;
+  author: Types.ObjectId;
+  picture: Express.Multer.File | null;
+}
+
+export interface QuizDataFinal {
+  title: string;
+  category: Types.ObjectId;
+  author: Types.ObjectId;
+  picture: string | null;
+}
