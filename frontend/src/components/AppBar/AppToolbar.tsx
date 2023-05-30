@@ -1,11 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './AppToolbar.scss';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectUser } from '../../features/users/usersSlice';
+import { logout } from '../../features/users/usersThunk';
+import './AppToolbar.scss';
 
 const AppToolbar = () => {
+  const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
+
+  const logoutFunc = async () => {
+    if (window.confirm('Вы действительно хотите выйти?')) {
+      await dispatch(logout());
+    }
+  };
 
   return (
     <div className="header">
@@ -44,11 +52,12 @@ const AppToolbar = () => {
             </Link>
           </li>
           {user ? (
-            <li className="navigation__item">
-              <Link to="/logout" className="navigation__link">
-                Привет {user.displayName}!
-              </Link>
-            </li>
+            <>
+              <li className="navigation__greeting">Привет {user.displayName}!</li>
+              <button className="navigation__logout-item" onClick={logoutFunc}>
+                Выйти
+              </button>
+            </>
           ) : (
             <li className="navigation__item">
               <Link to="/login" className="navigation__link">

@@ -1,6 +1,4 @@
-.main-inner {
-
-}
+@import "../../../styles/colors";
 
 .screen__background {
   position: absolute;
@@ -21,7 +19,7 @@
 .screen__background__shape1 {
   height: 520px;
   width: 520px;
-  background: #FFF;
+  background: $white;
   top: -50px;
   right: 120px;
   border-radius: 0 72px 0 0;
@@ -81,7 +79,7 @@
 }
 
 .social-login__icon {
-  color: #fff;
+  color: $white;
   text-decoration: none;
   border-radius: 50%;
 }

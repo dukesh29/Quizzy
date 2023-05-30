@@ -1,4 +1,5 @@
-@import "styles.css";
+@import "styles";
+@import "../../../styles/colors";
 
 .screen-login {
   background: linear-gradient(90deg, #5D54A4, #7C78B8);
@@ -68,11 +69,11 @@
       position: absolute;
       top: 29px;
       right: 12px;
-      color: #fff;
+      color: $white;
     }
 
     .login__submit {
-      background: #fff;
+      background: $white;
       font-size: 14px;
       margin-top: 18px;
       padding: 16px 20px;
@@ -94,7 +95,7 @@
     .login__submit:not(:disabled):hover {
       border-color: #6A679E;
       background-color: #6A679E;
-      color: white;
+      color: $white;
       outline: none;
     }
 
@@ -103,7 +104,7 @@
     }
 
     .login__submit:disabled:hover {
-      color: black;
+      color: $black;
       background-color: gainsboro;
     }
   }
@@ -115,11 +116,11 @@
     text-align: center;
     bottom: 0;
     right: 0;
-    color: #fff;
+    color: $white;
 
     .social-login__register {
       display: inline-block;
-      color: #FFFFFF;
+      color: $white;
       font-weight: bold;
       margin-bottom: 10px;
 
