@@ -15,4 +15,12 @@ export class ApiError extends Error {
   static BadRequest(message: string, errors?: []) {
     return new ApiError(400, message, errors);
   }
+
+  static Forbidden(message: string, errors?: []) {
+    return new ApiError(403, message, errors);
+  }
+
+  static NotFound(message: string, errors?: []) {
+    return new ApiError(404, message, errors);
+  }
 }
