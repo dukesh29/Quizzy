@@ -9,6 +9,7 @@ import Home from './features/Home';
 import Layout from './components/Layout/Layout';
 import { ToastContainer } from 'react-toastify';
 import CreateCategory from './features/categories/createCategory';
+import QuizForm from './features/quizzes/components/QuizForm';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -21,6 +22,7 @@ function App() {
             <Route path="/create_category" element={<CreateCategory />} />
           </Route>
           <Route path="/" element={<Home />} />
+          <Route path="/create_quiz" element={<QuizForm />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="*" element={'Not found'} />
