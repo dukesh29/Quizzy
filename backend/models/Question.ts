@@ -14,16 +14,12 @@ const QuestionSchema = new Schema({
       message: 'Данный квиз не существует!',
     },
   },
-  type: {
-    type: String,
-    enum: ['TrueFalse', 'MultipleChoice'],
-  },
   text: {
     type: String,
     required: true,
   },
   image: String,
-  answers: [
+  options: [
     {
       variant: {
         type: String,
@@ -34,7 +30,6 @@ const QuestionSchema = new Schema({
         required: true,
         default: false,
       },
-      description: String,
     },
   ],
 });
