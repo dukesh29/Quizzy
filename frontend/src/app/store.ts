@@ -3,6 +3,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from 'redux-persist/es/constants';
 import storage from 'redux-persist/lib/storage';
 import { usersReducer } from '../features/users/usersSlice';
+import { categoryReducer } from '../features/categories/categorySlice';
 
 const usersPersistConfig = {
   key: 'Quizzy:users',
@@ -12,6 +13,7 @@ const usersPersistConfig = {
 
 const rootReducer = combineReducers({
   users: persistReducer(usersPersistConfig, usersReducer),
+  category: categoryReducer,
 });
 
 export const store = configureStore({

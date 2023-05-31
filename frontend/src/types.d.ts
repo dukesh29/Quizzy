@@ -38,3 +38,12 @@ export interface ValidationError {
 export interface GlobalError {
   message: string;
 }
+
+export interface Category {
+  _id: string;
+  name: string;
+}
+
+export interface CategoryMutation {
+  name: string;
+}

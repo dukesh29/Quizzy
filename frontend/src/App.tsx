@@ -8,6 +8,7 @@ import { selectUser } from './features/users/usersSlice';
 import Home from './features/Home';
 import Layout from './components/Layout/Layout';
 import { ToastContainer } from 'react-toastify';
+import CreateCategory from './features/categories/createCategory';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -16,7 +17,9 @@ function App() {
       <ToastContainer />
       <Layout>
         <Routes>
-          <Route element={<Protected userRole={user?.role} priority="user" />}></Route>
+          <Route element={<Protected userRole={user?.role} priority="admin" />}>
+            <Route path="/create_category" element={<CreateCategory />} />
+          </Route>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />

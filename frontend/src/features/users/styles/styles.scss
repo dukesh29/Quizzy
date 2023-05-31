@@ -7,7 +7,6 @@
   right: 0;
   bottom: 0;
   z-index: 0;
-  -webkit-clip-path: inset(0 0 0 0);
   clip-path: inset(0 0 0 0);
 }
 
@@ -44,7 +43,6 @@
 }
 
 .screen__background__shape4 {
-  height: 400px;
   width: 200px;
   background: #7E7BB9;
   top: 420px;

@@ -36,6 +36,17 @@ const AppToolbar = () => {
           <div className="navigation__menu">
             {user && (
               <>
+                {user.role === 'admin' && (
+                  <li className="navigation__item">
+                    <Link
+                      to="/create_category"
+                      className="navigation__link"
+                      onClick={closeHamburger}
+                    >
+                      Создать категорию
+                    </Link>
+                  </li>
+                )}
                 <li className="navigation__item">
                   <Link to="/create_quiz" className="navigation__link" onClick={closeHamburger}>
                     Создать квиз
@@ -53,19 +64,9 @@ const AppToolbar = () => {
                 Все квизы
               </Link>
             </li>
-            <li className="navigation__item">
-              <Link to="/about" className="navigation__link" onClick={closeHamburger}>
-                О создателе
-              </Link>
-            </li>
-            <li className="navigation__item">
-              <Link to="/contact" className="navigation__link" onClick={closeHamburger}>
-                Контакты
-              </Link>
-            </li>
           </div>
           {user ? (
-            <div className={`${isOpen ? 'reverse' : 'navigation__manual'}`}>
+            <div className="reverse">
               <li className="navigation__greeting">Привет {user.displayName}!</li>
               <button className="navigation__logout-item" onClick={logoutFunc}>
                 Выйти
