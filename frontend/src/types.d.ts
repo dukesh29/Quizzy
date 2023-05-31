@@ -47,3 +47,26 @@ export interface Category {
 export interface CategoryMutation {
   name: string;
 }
+
+export interface QuizDataMutation {
+  title: string;
+  category: string;
+  picture: File | null;
+  author: string | null;
+}
+
+export interface Option {
+  variant: string;
+  isCorrect: boolean;
+}
+
+export interface QuestionMutation {
+  text: string;
+  image: File | null;
+  options: Option[];
+}
+
+export interface QuizItemMutation {
+  quiz: QuizDataMutation;
+  questions: QuestionMutation[];
+}
