@@ -4,7 +4,7 @@ import { body } from 'express-validator';
 import Quiz from '../models/Quiz';
 
 export const createCategoryValidator = body('name')
-  .isEmpty()
+  .notEmpty()
   .withMessage('Поле обязательно для введения!');
 
 export const getCategoryService = () => {
@@ -24,7 +24,7 @@ export const getCategoryServiceById = (id: string) => {
 };
 
 export const createCategoryService = async (name: string) => {
-  return await Category.create({ name });
+  return await Category.create({ name: name });
 };
 
 export const editCategoryService = (id: string) => {

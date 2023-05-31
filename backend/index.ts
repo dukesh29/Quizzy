@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import config from './config';
 import usersRouter from './routers/users';
 import { globalErrorHandler } from './middlewares/error-middleware';
+import categoriesRouter from './routers/categories';
 
 const app = express();
 
@@ -13,7 +14,7 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api/users', usersRouter);
-app.use('/api/categories', usersRouter);
+app.use('/api/categories', categoriesRouter);
 app.use(globalErrorHandler);
 
 const run = async () => {

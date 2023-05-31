@@ -12,7 +12,7 @@ import { ApiError } from '../exceptions/api-error';
 
 export const getCategories: RequestHandler = async (req, res, next) => {
   try {
-    const data = getCategoryService();
+    const data = await getCategoryService();
     return res.send(data);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
@@ -24,7 +24,7 @@ export const getCategories: RequestHandler = async (req, res, next) => {
 
 export const getCategoryById: RequestHandler = async (req, res, next) => {
   try {
-    const data = getCategoryServiceById(req.params.id);
+    const data = await getCategoryServiceById(req.params.id);
     return res.send(data);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
@@ -41,7 +41,7 @@ export const createCategory: RequestHandler = async (req, res, next) => {
       return next(ApiError.BadRequest('Ошибка при валидации', errors.array() as []));
     }
     const { name } = req.body;
-    const data = createCategoryService(name);
+    const data = await createCategoryService(name);
     return res.send(data);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
