@@ -112,7 +112,7 @@
     height: 150px;
     width: 190px;
     text-align: center;
-    bottom: -30px;
+    bottom: -20px;
     right: 0;
     color: $white;
 
@@ -121,6 +121,7 @@
       color: $white;
       font-weight: bold;
       margin-bottom: 10px;
+      text-decoration: underline;
 
       &:hover {
         text-decoration: none;
