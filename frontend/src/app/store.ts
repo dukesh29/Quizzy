@@ -4,6 +4,7 @@ import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from 'redux-persist
 import storage from 'redux-persist/lib/storage';
 import { usersReducer } from '../features/users/usersSlice';
 import { categoryReducer } from '../features/categories/categorySlice';
+import { quizReducer } from '../features/quizzes/quizSlice';
 
 const usersPersistConfig = {
   key: 'Quizzy:users',
@@ -14,6 +15,7 @@ const usersPersistConfig = {
 const rootReducer = combineReducers({
   users: persistReducer(usersPersistConfig, usersReducer),
   category: categoryReducer,
+  quiz: quizReducer,
 });
 
 export const store = configureStore({

@@ -60,13 +60,33 @@ export interface Option {
   isCorrect: boolean;
 }
 
-export interface QuestionMutation {
+export interface QuestionDataMutation {
   text: string;
-  image: File | null;
   options: Option[];
 }
 
 export interface QuizItemMutation {
   quiz: QuizDataMutation;
-  questions: QuestionMutation[];
+  questions: QuestionDataMutation[];
+}
+
+export interface QuizData {
+  _id: string;
+  title: string;
+  category: string;
+  picture: string | null;
+  author: string;
+  createdAt: Date;
+}
+
+export interface QuestionData {
+  _id: string;
+  quiz: string;
+  text: string;
+  options: Option[];
+}
+
+export interface Quiz {
+  quiz: QuizData;
+  questions: QuestionData[];
 }

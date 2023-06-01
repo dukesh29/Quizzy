@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Checkbox, Grid, MenuItem, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Grid,
+  MenuItem,
+  TextField,
+  Tooltip,
+  Typography,
+  Zoom,
+} from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectCategoriesList } from '../../categories/categorySlice';
 import { fetchCategories } from '../../categories/categoryThunk';
 import FileInput from '../../../components/FileInput/FileInput';
-import { QuestionMutation, QuizDataMutation } from '../../../types';
+import { QuestionDataMutation, QuizDataMutation } from '../../../types';
 import { selectUser } from '../../users/usersSlice';
+import { createQuiz } from '../quizThunk';
 import '../Quiz.scss';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const QuizForm = () => {
   const dispatch = useAppDispatch();
@@ -18,10 +30,9 @@ const QuizForm = () => {
     picture: null,
   });
 
-  const [questions, setQuestions] = useState<QuestionMutation[]>([
+  const [questions, setQuestions] = useState<QuestionDataMutation[]>([
     {
       text: '',
-      image: null,
       options: [
         { variant: '', isCorrect: false },
         { variant: '', isCorrect: false },
@@ -61,13 +72,6 @@ const QuizForm = () => {
     setQuestions(updatedQuestions);
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>, questionIndex: number) => {
-    const file = event.target.files && event.target.files[0];
-    const updatedQuestions = [...questions];
-    updatedQuestions[questionIndex].image = file;
-    setQuestions(updatedQuestions);
-  };
-
   const handleOptionChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     questionIndex: number,
@@ -94,7 +98,6 @@ const QuizForm = () => {
       ...questions,
       {
         text: '',
-        image: null,
         options: [
           { variant: '', isCorrect: false },
           { variant: '', isCorrect: false },
@@ -105,23 +108,26 @@ const QuizForm = () => {
     ]);
   };
 
-  const submitFormHandler = (e: React.FormEvent) => {
+  const handleDeleteQuestion = (index: number) => {
+    setQuestions((prevState) => prevState.filter((item, i) => i !== index));
+  };
+
+  const submitFormHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(state);
-    console.log(questions);
+    await dispatch(createQuiz({ quiz: state, questions: questions }));
   };
 
   return (
     <>
       <Box
         sx={{
-          mt: 4,
+          mt: 2,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
         }}
       >
-        <Typography component="h1" variant="h5" sx={{ my: 3 }}>
+        <Typography component="h3" variant="h3" sx={{ my: 5 }}>
           Создание квиза
         </Typography>
       </Box>
@@ -163,61 +169,61 @@ const QuizForm = () => {
           <Grid item xs>
             <FileInput onChange={fileInputChangeHandler} name="picture" label="Image" />
           </Grid>
+          <Grid item xs sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Button variant="outlined" color="secondary" onClick={handleAddQuestion}>
+              Добавить вопрос
+            </Button>
+          </Grid>
           {questions.map((question, questionIndex) => (
             <React.Fragment key={questionIndex}>
-              <Grid item>
+              <Typography component="h1" variant="h5" sx={{ mt: 3, mb: 2, textAlign: 'center' }}>
+                {`Вопроc ${questionIndex + 1}`}
+              </Typography>
+              <Grid item sx={{ display: 'flex', gap: '10px' }}>
                 <TextField
-                  color="secondary"
                   fullWidth
+                  color="secondary"
                   id={`text-${questionIndex}`}
                   label={`Вопрос ${questionIndex + 1}`}
                   value={question.text}
                   onChange={(event) => handleTextChange(event, questionIndex)}
                   required
                 />
-              </Grid>
-              <Grid item>
-                <FileInput
-                  onChange={(event) => handleImageChange(event, questionIndex)}
-                  name="picture"
-                  label="Image"
-                />
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => handleDeleteQuestion(questionIndex)}
+                >
+                  <DeleteIcon />
+                </Button>
               </Grid>
               {question.options.map((option, optionIndex) => (
-                <Grid
-                  sx={{ mt: 2, ml: 1, display: 'flex', gap: '10px' }}
-                  container
-                  spacing={2}
-                  key={optionIndex}
-                >
-                  <Grid item>
-                    <TextField
-                      color="secondary"
-                      fullWidth
-                      label={`Вариант ${optionIndex + 1}`}
-                      value={option.variant}
-                      onChange={(event) => handleOptionChange(event, questionIndex, optionIndex)}
-                      required
-                    />
-                  </Grid>
-                  <Grid item>
+                <Grid key={optionIndex} item sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <TextField
+                    color="secondary"
+                    fullWidth
+                    label={`Вариант ${optionIndex + 1}`}
+                    value={option.variant}
+                    onChange={(event) => handleOptionChange(event, questionIndex, optionIndex)}
+                    required
+                  />
+                  <Tooltip
+                    title="Отметь верный вариант"
+                    TransitionComponent={Zoom}
+                    placement="right"
+                  >
                     <Checkbox
                       checked={option.isCorrect}
                       onChange={(event) =>
                         handleCorrectOptionChange(event, questionIndex, optionIndex)
                       }
                     />
-                  </Grid>
+                  </Tooltip>
                 </Grid>
               ))}
             </React.Fragment>
           ))}
           <div className="button-group">
-            <Grid item>
-              <Button variant="outlined" color="secondary" onClick={handleAddQuestion}>
-                Добавить вопрос
-              </Button>
-            </Grid>
             <Grid item>
               <Button variant="outlined" type="submit" color="secondary">
                 Создать квиз
