@@ -1,10 +1,10 @@
-import { Quiz, ValidationError } from '../../types';
+import { Quiz, QuizData, ValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { createQuiz, deleteQuiz, getAllQuizzes, getOneQuiz } from './quizThunk';
 
 interface QuizState {
-  items: Quiz[] | null;
+  items: QuizData[] | null;
   oneQuiz: Quiz | null;
   allQuizLoading: boolean;
   oneQuizLoading: boolean;

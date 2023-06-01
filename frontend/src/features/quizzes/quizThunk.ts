@@ -1,25 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Quiz, QuizItemMutation, ValidationError } from '../../types';
+import { Quiz, QuizData, QuizItemMutation, ValidationError } from '../../types';
 import axiosApi from '../../axios';
 import { isAxiosError } from 'axios';
 
-export const getAllQuizzes = createAsyncThunk<Quiz[], { category?: string; user?: string }>(
-  'quizzes/getAll',
-  async ({ category, user }) => {
-    let url = '/quiz';
-
-    if (category && user) {
-      url += `?category=${category}&user=${user}`;
-    } else if (category) {
-      url += `?category=${category}`;
-    } else if (user) {
-      url += `?user=${user}`;
-    }
-
-    const response = await axiosApi.get<Quiz[]>(url);
-    return response.data;
-  },
-);
+export const getAllQuizzes = createAsyncThunk<QuizData[]>('quizzes/getAll', async () => {
+  const response = await axiosApi.get<QuizData[]>('/quiz');
+  return response.data;
+});
 
 export const getOneQuiz = createAsyncThunk<Quiz, string>('quizzes/getOne', async (id) => {
   const response = await axiosApi.get(`/quiz/${id}`);
