@@ -36,17 +36,11 @@ const AppToolbar = () => {
           <div className="navigation__menu">
             {user && (
               <>
-                {user.role === 'admin' && (
-                  <li className="navigation__item">
-                    <Link
-                      to="/create_category"
-                      className="navigation__link"
-                      onClick={closeHamburger}
-                    >
-                      Создать категорию
-                    </Link>
-                  </li>
-                )}
+                <li className="navigation__item">
+                  <Link to="/create_category" className="navigation__link" onClick={closeHamburger}>
+                    Создать категорию
+                  </Link>
+                </li>
                 <li className="navigation__item">
                   <Link to="/create_quiz" className="navigation__link" onClick={closeHamburger}>
                     Создать квиз
@@ -60,8 +54,12 @@ const AppToolbar = () => {
               </>
             )}
             <li className="navigation__item">
-              <Link to="/quizzes" className="navigation__link" onClick={closeHamburger}>
-                Все квизы
+              <Link
+                to={`/myquizzes/${user?._id}`}
+                className="navigation__link"
+                onClick={closeHamburger}
+              >
+                Мои квизы
               </Link>
             </li>
           </div>
