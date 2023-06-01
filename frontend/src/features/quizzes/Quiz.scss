@@ -1,6 +1,31 @@
+@import '../../styles/colors';
+
 .button-group {
   display: flex;
   margin-top: 20px;
   justify-content: space-around;
   gap: 10px;
+}
+
+.quizzes__title {
+  align-self: center;
+  text-align: center;
+  margin: 35px 0 55px 0;
+  font-size: 40px;
+  background-color: $black;
+  padding: 5px;
+  color: $white;
+  border-radius: 10px;
+}
+
+@media (max-width: 1053px) {
+  .quiz_main {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 720px) {
+  .quizzes__title {
+    font-size: 25px;
+  }
 }

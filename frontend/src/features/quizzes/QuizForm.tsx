@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
   Button,
   Checkbox,
+  CircularProgress,
   Grid,
   MenuItem,
   TextField,
@@ -10,19 +10,21 @@ import {
   Typography,
   Zoom,
 } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectCategoriesList } from '../../categories/categorySlice';
-import { fetchCategories } from '../../categories/categoryThunk';
-import FileInput from '../../../components/FileInput/FileInput';
-import { QuestionDataMutation, QuizDataMutation } from '../../../types';
-import { selectUser } from '../../users/usersSlice';
-import { createQuiz } from '../quizThunk';
-import '../Quiz.scss';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectCategoriesList } from '../categories/categorySlice';
+import { fetchCategories } from '../categories/categoryThunk';
+import FileInput from '../../components/FileInput/FileInput';
+import { QuestionDataMutation, QuizDataMutation } from '../../types';
+import { selectUser } from '../users/usersSlice';
+import { createQuiz } from './quizThunk';
 import DeleteIcon from '@mui/icons-material/Delete';
+import './Quiz.scss';
+import { selectCreateQuizLoading } from './quizSlice';
 
 const QuizForm = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
+  const createLoading = useAppSelector(selectCreateQuizLoading);
   const [state, setState] = useState<QuizDataMutation>({
     category: '',
     title: '',
@@ -118,19 +120,8 @@ const QuizForm = () => {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          mt: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Typography component="h3" variant="h3" sx={{ my: 5 }}>
-          Создание квиза
-        </Typography>
-      </Box>
+    <div className="quiz_main">
+      <h2 className="quizzes__title">Создание квиза</h2>
       <Grid component="form" onSubmit={submitFormHandler} container direction="column" spacing={2}>
         <Grid container direction="column" spacing={2}>
           <Grid item>
@@ -225,14 +216,18 @@ const QuizForm = () => {
           ))}
           <div className="button-group">
             <Grid item>
-              <Button variant="outlined" type="submit" color="secondary">
-                Создать квиз
+              <Button disabled={createLoading} variant="outlined" type="submit" color="secondary">
+                {createLoading ? (
+                  <CircularProgress color="secondary" size="small" />
+                ) : (
+                  'Создать квиз'
+                )}
               </Button>
             </Grid>
           </div>
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 };
 
