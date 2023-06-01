@@ -11,9 +11,9 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { login } from './usersThunk';
 import { selectLoginError, selectLoginLoading } from './usersSlice';
 import { CircularProgress } from '@mui/material';
-import { toast } from 'react-toastify';
 import SocialSiteLogin from './components/SocialSiteLogin';
 import './styles/LoginForm.scss';
+import { enqueueSnackbar } from 'notistack';
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -31,24 +31,21 @@ const LoginForm = () => {
     reValidateMode: 'onChange',
   });
 
-  const notifySuccess = () =>
-    toast.success('Добро пожаловать в Quizzy!', {
-      position: 'top-right',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    });
-
   const [isVisible, setIsVisible] = useState(false);
 
   const onSubmit: SubmitHandler<LoginMutation> = async (data) => {
-    await dispatch(login(data)).unwrap();
-    notifySuccess();
-    reset();
-    navigate('/');
+    try {
+      await dispatch(login(data)).unwrap();
+      enqueueSnackbar('Вы успешно вошли в Quizzy! ', {
+        variant: 'success',
+        autoHideDuration: 3000,
+      });
+      reset();
+      navigate('/');
+    } catch (e) {
+      enqueueSnackbar('Что то пошло не так! ', { variant: 'error', autoHideDuration: 3000 });
+      console.error(e);
+    }
   };
 
   return (
@@ -96,7 +93,7 @@ const LoginForm = () => {
             {errors?.password && <div className="error">{errors.password.message}</div>}
           </div>
           <button type="submit" disabled={!isValid || loading} className="button login__submit">
-            {loading ? <CircularProgress /> : 'Войти'}
+            {loading ? <CircularProgress color="secondary" size="small" /> : 'Войти'}
           </button>
         </form>
         <div className="social-login">

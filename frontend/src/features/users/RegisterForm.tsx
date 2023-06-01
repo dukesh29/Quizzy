@@ -12,37 +12,15 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { createUser } from './usersThunk';
 import { CircularProgress } from '@mui/material';
 import { selectRegisterError, selectRegisterLoading } from './usersSlice';
-import { toast } from 'react-toastify';
 import SocialSiteLogin from './components/SocialSiteLogin';
 import './styles/RegisterForm.scss';
+import { enqueueSnackbar } from 'notistack';
 
 const RegisterForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const loading = useAppSelector(selectRegisterLoading);
   const serverError = useAppSelector(selectRegisterError);
-
-  const notifySuccess = () =>
-    toast.success('Вы успешно зарегистрировались в Quizzy!', {
-      position: 'top-right',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    });
-
-  const notifyFailure = () =>
-    toast.error('Что то пошло не так!', {
-      position: 'top-right',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    });
 
   const {
     register,
@@ -68,11 +46,14 @@ const RegisterForm = () => {
   const onSubmit: SubmitHandler<UserMutation> = async (data) => {
     try {
       await dispatch(createUser(data)).unwrap();
-      notifySuccess();
+      enqueueSnackbar('Вы успешно зарегистрировались в Quizzy! ', {
+        variant: 'success',
+        autoHideDuration: 3000,
+      });
       reset();
       navigate('/');
     } catch (error) {
-      notifyFailure();
+      enqueueSnackbar('Что то пошло не так! ', { variant: 'error', autoHideDuration: 3000 });
       setError('email', {
         type: 'manual',
         message: getFieldError('email'),
@@ -148,7 +129,7 @@ const RegisterForm = () => {
             {errors?.displayName && <div className="error">{errors.displayName.message}</div>}
           </div>
           <button type="submit" disabled={!isValid} className="button register__submit">
-            {loading ? <CircularProgress /> : 'Зарегистрироваться'}
+            {loading ? <CircularProgress color="secondary" size="small" /> : 'Зарегистрироваться'}
           </button>
         </form>
         <div className="social-register">

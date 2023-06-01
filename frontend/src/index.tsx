@@ -8,7 +8,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GOOGLE_CLIENT_ID } from './constants';
 import { addInterceptors, checkAccess } from './axios';
-import 'react-toastify/dist/ReactToastify.css';
 import './index.scss';
 
 addInterceptors(store);
