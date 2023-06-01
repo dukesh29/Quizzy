@@ -1,17 +1,13 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import React from 'react';
+import { User } from '../types';
 
 interface Props {
-  userRole?: string | null | undefined;
-  priority?: string;
+  user?: User | null;
 }
 
-const Protected: React.FC<Props> = ({ userRole, priority }) => {
-  if (
-    (userRole === priority && priority === 'admin') ||
-    (priority === 'user' && userRole === 'user') ||
-    userRole === 'admin'
-  ) {
+const Protected: React.FC<Props> = ({ user }) => {
+  if (user) {
     return <Outlet />;
   } else {
     return <Navigate to="/login" />;
