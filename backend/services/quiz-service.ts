@@ -1,20 +1,9 @@
 import Quiz from '../models/Quiz';
-import { Query, QuizDataToCreate } from '../types';
+import { QuizDataToCreate } from '../types';
 import Question from '../models/Question';
 
-export const getAllQuizzesService = async (category?: string, user?: string) => {
-  const query: Query = {};
-
-  if (category && user) {
-    query['category'] = category;
-    query['author'] = user;
-  } else if (category) {
-    query['category'] = category;
-  } else if (user) {
-    query['author'] = user;
-  }
-
-  return Quiz.find(query).populate('questions');
+export const getAllQuizzesService = async () => {
+  return Quiz.find();
 };
 
 export const getQuizByIdService = (id: string) => {

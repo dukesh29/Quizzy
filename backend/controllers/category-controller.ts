@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import {
   createCategoryService,
   deleteCategoryService,
-  editCategoryService,
   getCategoryService,
   getCategoryServiceById,
 } from '../services/category-service';
@@ -43,22 +42,6 @@ export const createCategory: RequestHandler = async (req, res, next) => {
     const { name } = req.body;
     const data = await createCategoryService(name);
     return res.send(data);
-  } catch (error) {
-    if (error instanceof mongoose.Error.ValidationError) {
-      return res.status(400).send(error);
-    }
-    next(error);
-  }
-};
-
-export const editCategory: RequestHandler = async (req, res, next) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(ApiError.BadRequest('Ошибка при валидации', errors.array() as []));
-    }
-    const result = await editCategoryService(req.params.id);
-    return res.send(result);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
       return res.status(400).send(error);

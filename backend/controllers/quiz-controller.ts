@@ -12,8 +12,7 @@ import { QuizDataToCreate } from '../types';
 
 export const getAllQuizzes: RequestHandler = async (req, res, next) => {
   try {
-    const { category, user } = req.query;
-    const quizzes = await getAllQuizzesService(category as string, user as string);
+    const quizzes = await getAllQuizzesService();
     return res.send(quizzes);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {

@@ -42,6 +42,10 @@ export type ProfileSuccessResponse = {
   };
 };
 
+export interface ICategory {
+  name: string;
+}
+
 export interface OptionFormData {
   variant: string;
   isCorrect: string;

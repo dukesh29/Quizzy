@@ -27,10 +27,6 @@ export const createCategoryService = async (name: string) => {
   return await Category.create({ name: name });
 };
 
-export const editCategoryService = (id: string) => {
-  return Category.findByIdAndUpdate(id);
-};
-
 export const deleteCategoryService = async (id: string) => {
   const quizzes = await Quiz.find({ category: id });
   if (quizzes) {

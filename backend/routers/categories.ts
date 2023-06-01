@@ -3,7 +3,6 @@ import auth from '../middlewares/auth-middleware';
 import {
   createCategory,
   deleteCategory,
-  editCategory,
   getCategories,
   getCategoryById,
 } from '../controllers/category-controller';
@@ -14,8 +13,7 @@ const categoriesRouter = express.Router();
 
 categoriesRouter.get('/', getCategories);
 categoriesRouter.get('/:id', getCategoryById);
-categoriesRouter.post('/create', auth, permit('admin'), createCategoryValidator, createCategory);
-categoriesRouter.put('/edit', auth, permit('admin'), createCategoryValidator, editCategory);
+categoriesRouter.post('/create', auth, createCategoryValidator, createCategory);
 categoriesRouter.delete('/delete', auth, permit('admin'), deleteCategory);
 
 export default categoriesRouter;
