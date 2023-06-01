@@ -5,16 +5,15 @@ import { ApiError } from '../exceptions/api-error';
 import {
   createQuizService,
   deleteQuizService,
-  editQuizService,
-  getAllQuizService,
+  getAllQuizzesService,
   getQuizByIdService,
 } from '../services/quiz-service';
-import { QuestionData, QuestionDataFinal, QuizData, QuizDataFinal } from '../types';
+import { QuizDataToCreate } from '../types';
 
-export const getAllQuiz: RequestHandler = async (req, res, next) => {
+export const getAllQuizzes: RequestHandler = async (req, res, next) => {
   try {
-    const categoryId = req.query.category as string | undefined;
-    const quizzes = await getAllQuizService(categoryId);
+    const { category, user } = req.query;
+    const quizzes = await getAllQuizzesService(category as string, user as string);
     return res.send(quizzes);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
@@ -39,52 +38,17 @@ export const getQuizById: RequestHandler = async (req, res, next) => {
 export const createQuiz: RequestHandler = async (req, res, next) => {
   try {
     const errors = validationResult(req);
-    const files = req.files as { [filename: string]: Express.Multer.File[] };
     if (!errors.isEmpty()) {
       return next(ApiError.BadRequest('Ошибка при валидации', errors.array() as []));
     }
-    const quizData: QuizData = req.body.quizData;
+    const data = req.body;
 
-    const quizDataToSend: QuizDataFinal = {
-      ...quizData,
-      picture:
-        req.files && files['quizImage'][0].filename
-          ? 'images/quiz/' + files['quizImage'][0].filename
-          : null,
+    const reqData: QuizDataToCreate = {
+      ...data,
+      picture: req.file ? 'images/quiz/' + req.file.filename : null,
     };
 
-    const questionsData: QuestionData[] = req.body.questions;
-    const questionsToCreate: QuestionDataFinal[] = questionsData.map((item, index) => {
-      const questionImageFile = req.files && files['questionImage'];
-      const questionImage =
-        questionImageFile && questionImageFile[index]
-          ? 'images/question/' + questionImageFile[index].filename
-          : null;
-
-      return {
-        ...item,
-        image: questionImage,
-      };
-    });
-
-    const oneQuiz = await createQuizService(quizDataToSend, questionsToCreate);
-    return res.send(oneQuiz);
-  } catch (error) {
-    if (error instanceof mongoose.Error.ValidationError) {
-      return res.status(400).send(error);
-    }
-    next(error);
-  }
-};
-
-export const editQuiz: RequestHandler = async (req, res, next) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(ApiError.BadRequest('Ошибка при валидации', errors.array() as []));
-    }
-    const { title, questions } = req.body;
-    const oneQuiz = await editQuizService(title);
+    const oneQuiz = await createQuizService(reqData);
     return res.send(oneQuiz);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
@@ -99,9 +63,6 @@ export const deleteQuiz: RequestHandler = async (req, res, next) => {
     await deleteQuizService(req.params.id);
     return res.status(204).send('Квиз успешно удален!');
   } catch (error) {
-    if (error instanceof mongoose.Error.ValidationError) {
-      return res.status(400).send(error);
-    }
     next(error);
   }
 };

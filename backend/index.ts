@@ -6,6 +6,7 @@ import config from './config';
 import usersRouter from './routers/users';
 import { globalErrorHandler } from './middlewares/error-middleware';
 import categoriesRouter from './routers/categories';
+import quizRouter from './routers/quiz';
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/api/users', usersRouter);
 app.use('/api/categories', categoriesRouter);
+app.use('/api/quiz', quizRouter);
 app.use(globalErrorHandler);
 
 const run = async () => {

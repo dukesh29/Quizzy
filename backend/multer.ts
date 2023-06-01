@@ -4,21 +4,11 @@ import path from 'path';
 import { randomUUID } from 'crypto';
 import config from './config';
 
-const imageStorage = multer.diskStorage({
+const avatarStorage = multer.diskStorage({
   destination: async (_req, _file, cb) => {
-    const destDir = path.join(config.publicPath, 'images');
-    const destDirQuiz = path.join(destDir, 'quiz');
-    const destDirQuestion = path.join(destDir, 'question');
-
+    const destDir = path.join(config.publicPath, 'images/avatarsDir');
     await fs.mkdir(destDir, { recursive: true });
-    await fs.mkdir(destDirQuiz, { recursive: true });
-    await fs.mkdir(destDirQuestion, { recursive: true });
-
-    if (_file.fieldname === 'quizImage') {
-      cb(null, destDirQuiz);
-    } else if (_file.fieldname === 'questionImage') {
-      cb(null, destDirQuestion);
-    }
+    cb(null, destDir);
   },
   filename: (_req, file, cb) => {
     const extension = path.extname(file.originalname);
@@ -26,4 +16,17 @@ const imageStorage = multer.diskStorage({
   },
 });
 
-export const imagesUpload = multer({ storage: imageStorage });
+const imageStorage = multer.diskStorage({
+  destination: async (_req, _file, cb) => {
+    const destDir = path.join(config.publicPath, 'images/photosDir');
+    await fs.mkdir(destDir, { recursive: true });
+    cb(null, destDir);
+  },
+  filename: (_req, file, cb) => {
+    const extension = path.extname(file.originalname);
+    cb(null, randomUUID() + extension);
+  },
+});
+
+export const UploadAvatar = multer({ storage: avatarStorage });
+export const UploadImage = multer({ storage: imageStorage });

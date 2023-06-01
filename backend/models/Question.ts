@@ -18,7 +18,6 @@ const QuestionSchema = new Schema({
     type: String,
     required: true,
   },
-  image: String,
   options: [
     {
       variant: {
@@ -28,7 +27,6 @@ const QuestionSchema = new Schema({
       isCorrect: {
         type: Boolean,
         required: true,
-        default: false,
       },
     },
   ],
