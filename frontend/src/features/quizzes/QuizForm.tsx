@@ -122,7 +122,14 @@ const QuizForm = () => {
   return (
     <div className="quiz_main">
       <h2 className="quizzes__title">Создание квиза</h2>
-      <Grid component="form" onSubmit={submitFormHandler} container direction="column" spacing={2}>
+      <Grid
+        sx={{ mt: 3 }}
+        component="form"
+        onSubmit={submitFormHandler}
+        container
+        direction="column"
+        spacing={2}
+      >
         <Grid container direction="column" spacing={2}>
           <Grid item>
             <TextField

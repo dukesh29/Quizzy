@@ -12,7 +12,7 @@ import {
 import { QuizData } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { apiURL, noApiURL } from '../../../constants';
+import { noApiURL } from '../../../constants';
 import { selectUser } from '../../users/usersSlice';
 import dayjs from 'dayjs';
 import { deleteQuiz, getAllQuizzes } from '../quizThunk';
@@ -40,8 +40,6 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
   const startQuiz = async (id: string) => {
     navigate('/quiz/' + id);
   };
-
-  console.log(noApiURL + '/' + quiz.picture);
 
   return (
     <>
