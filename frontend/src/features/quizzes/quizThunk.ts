@@ -1,15 +1,19 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Quiz, QuizData, QuizItemMutation, ValidationError } from '../../types';
+import { QuizData, QuizFromDB, QuizItemMutation, ValidationError } from '../../types';
 import axiosApi from '../../axios';
 import { isAxiosError } from 'axios';
 
-export const getAllQuizzes = createAsyncThunk<QuizData[]>('quizzes/getAll', async () => {
-  const response = await axiosApi.get<QuizData[]>('/quiz');
-  return response.data;
-});
+export const getAllQuizzes = createAsyncThunk<QuizData[], string | undefined>(
+  'quizzes/getAll',
+  async (query) => {
+    const url = query ? `/quiz?${query}` : '/quiz';
+    const response = await axiosApi.get<QuizData[]>(url);
+    return response.data;
+  },
+);
 
-export const getOneQuiz = createAsyncThunk<Quiz, string>('quizzes/getOne', async (id) => {
-  const response = await axiosApi.get(`/quiz/${id}`);
+export const getOneQuiz = createAsyncThunk<QuizFromDB, string>('quizzes/getOne', async (id) => {
+  const response = await axiosApi.get<QuizFromDB>(`/quiz/${id}`);
   return response.data;
 });
 

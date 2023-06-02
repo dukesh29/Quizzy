@@ -1,16 +1,17 @@
-import { Quiz, QuizData, ValidationError } from '../../types';
+import { QuizData, QuizFromDB, ValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { createQuiz, deleteQuiz, getAllQuizzes, getOneQuiz } from './quizThunk';
 
 interface QuizState {
   items: QuizData[] | null;
-  oneQuiz: Quiz | null;
+  oneQuiz: QuizFromDB | null;
   allQuizLoading: boolean;
   oneQuizLoading: boolean;
   createQuizError: ValidationError | null;
   createQuizLoading: boolean;
   deleteQuizLoading: boolean;
+  timer: number;
 }
 
 const initialState: QuizState = {
@@ -21,6 +22,7 @@ const initialState: QuizState = {
   createQuizError: null,
   createQuizLoading: false,
   deleteQuizLoading: false,
+  timer: 30,
 };
 
 const quizSlice = createSlice({
