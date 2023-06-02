@@ -41,6 +41,7 @@ const quizSlice = createSlice({
       state.allQuizLoading = false;
     });
     builder.addCase(getOneQuiz.pending, (state) => {
+      state.oneQuiz = null;
       state.oneQuizLoading = true;
     });
     builder.addCase(getOneQuiz.fulfilled, (state, { payload: quiz }) => {

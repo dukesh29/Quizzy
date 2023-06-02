@@ -73,9 +73,15 @@ export interface QuizItemMutation {
 export interface QuizData {
   _id: string;
   title: string;
-  category: string;
+  category: {
+    _id: string;
+    name: string;
+  };
   picture: string | null;
-  author: string;
+  author: {
+    _id: string;
+    displayName: string;
+  };
   createdAt: Date;
 }
 
@@ -86,7 +92,12 @@ export interface QuestionData {
   options: Option[];
 }
 
-export interface Quiz {
+export interface QuestionDataExample {
+  text: string;
+  options: Option[];
+}
+
+export interface QuizFromDB {
   quiz: QuizData;
   questions: QuestionData[];
 }

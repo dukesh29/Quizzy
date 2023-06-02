@@ -43,7 +43,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
 
   return (
     <>
-      <Card sx={{ pb: 1, height: '100%' }}>
+      <Card sx={{ pb: 1, height: '100%', display: 'flex', flexDirection: 'column' }}>
         <CardMedia
           component="img"
           height="250px"
@@ -64,17 +64,18 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'flex-start',
+            justifyContent: 'space-between',
             py: 0,
+            marginTop: 'auto',
           }}
         >
           <Typography />
-          <Typography sx={{ mb: 2 }} component="h3" variant="h5">
+          <Typography sx={{ mb: 2 }} component="h3" variant="h6">
             {quiz.title}
           </Typography>
           <Link
             component={RouterLink}
-            to={`/quiz/${quiz.author}`}
+            to={`/myquizzes/${quiz.author._id}`}
             sx={{
               color: 'black',
               mb: 2,
@@ -86,20 +87,20 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
               },
             }}
           >
-            Author: {quiz.author}
+            Author: {quiz.author.displayName}
           </Link>
         </CardContent>
-        <CardActions>
+        <CardActions sx={{ display: 'flex', alignItems: 'flex-end', marginTop: 'auto' }}>
           <Button
             size="small"
             color="secondary"
             variant="outlined"
-            onClick={() => startQuiz(quiz.author)}
+            onClick={() => startQuiz(quiz._id)}
             sx={{ mx: 'auto' }}
           >
-            {deleteLoading ? <CircularProgress /> : 'Начать квиз'}
+            {deleteLoading ? <CircularProgress color="secondary" size="small" /> : 'Начать квиз'}
           </Button>
-          {user && (user._id === quiz.author || user.role === 'admin') && (
+          {user && (user._id === quiz.author._id || user.role === 'admin') && (
             <Button
               size="small"
               color="secondary"
