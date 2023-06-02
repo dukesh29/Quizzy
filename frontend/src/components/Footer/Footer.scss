@@ -9,7 +9,7 @@
   height: 60px;
   padding: 10px 10px;
   width: 100%;
-  background: repeating-linear-gradient(45deg, #C7C5F4, #C7C5F4 10px, #776BCC 10px, #776BCC 20px);
+  background: repeating-linear-gradient(45deg, #C7C5F4, #C7C5F4 10px, $main 10px, $main 20px);
   box-shadow: 0 -15px 10px 0 rgba(0, 0, 0, 0.2);
 }
 

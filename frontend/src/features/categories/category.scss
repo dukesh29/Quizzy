@@ -2,20 +2,21 @@
 
 .card {
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: 20px;
   border: 1px solid black;
   padding: 10px 30px;
   border-radius: 10px;
   width: 50%;
+
   &:hover {
     background-color: white;
   }
 
   &__title {
-    font-size: 25px;
+    font-size: 20px;
     text-align: center;
+    flex-grow: 1;
   }
 }
 
