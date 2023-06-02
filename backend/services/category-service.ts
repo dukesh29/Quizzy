@@ -29,8 +29,14 @@ export const createCategoryService = async (name: string) => {
 
 export const deleteCategoryService = async (id: string) => {
   const quizzes = await Quiz.find({ category: id });
-  if (quizzes) {
-    throw ApiError.Forbidden('Данную категорию нельзя удалить!');
+  if (quizzes.length > 0) {
+    throw ApiError.Forbidden('Данную категорию нельзя удалить, так как она связана с квизами.');
   }
-  await Category.findByIdAndDelete(id);
+
+  const category = await Category.findByIdAndDelete(id);
+  if (!category) {
+    throw ApiError.NotFound('Категория не найдена.');
+  }
+
+  return category;
 };
