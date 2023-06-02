@@ -47,7 +47,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
         <CardMedia
           component="img"
           height="250px"
-          image={noApiURL + '/' + quiz.picture}
+          image={noApiURL + quiz.picture}
           alt={quiz.title}
           sx={{
             '&:hover': {

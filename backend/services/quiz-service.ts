@@ -32,7 +32,7 @@ export const getQuizByIdService = async (id: string) => {
 export const createQuizService = async (reqData: QuizDataToCreate) => {
   const createdQuiz = await Quiz.create({
     category: reqData.category,
-    title: reqData.category,
+    title: reqData.title,
     author: reqData.author,
     picture: reqData.picture,
   });

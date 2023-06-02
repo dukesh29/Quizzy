@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import mongoose from 'mongoose';
 import { validationResult } from 'express-validator';
 import { ApiError } from '../exceptions/api-error';
+import { promises as fs } from 'fs';
 import {
   createQuizService,
   deleteQuizService,
@@ -52,6 +53,9 @@ export const createQuiz: RequestHandler = async (req, res, next) => {
     const oneQuiz = await createQuizService(reqData);
     return res.send(oneQuiz);
   } catch (error) {
+    if (req.file) {
+      await fs.unlink(req.file.path);
+    }
     if (error instanceof mongoose.Error.ValidationError) {
       return res.status(400).send(error);
     }

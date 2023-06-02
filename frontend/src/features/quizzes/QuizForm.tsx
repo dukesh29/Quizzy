@@ -21,11 +21,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import './Quiz.scss';
 import { selectCreateQuizLoading } from './quizSlice';
 import { questionTypes } from '../../constants';
+import { useNavigate } from 'react-router-dom';
+import { enqueueSnackbar } from 'notistack';
 
 const QuizForm = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const createLoading = useAppSelector(selectCreateQuizLoading);
+  const navigate = useNavigate();
   const [questionType, setQuestionType] = useState('');
   const [state, setState] = useState<QuizDataMutation>({
     category: '',
@@ -33,6 +36,7 @@ const QuizForm = () => {
     author: user && user._id,
     picture: null,
   });
+  console.log(state);
 
   const [questions, setQuestions] = useState<QuestionDataMutation[]>([]);
 
@@ -124,7 +128,20 @@ const QuizForm = () => {
 
   const submitFormHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    await dispatch(createQuiz({ quiz: state, questions: questions }));
+    try {
+      await dispatch(createQuiz({ quiz: state, questions: questions })).unwrap();
+      enqueueSnackbar('Вы успешно создали Quiz! ', {
+        variant: 'success',
+        autoHideDuration: 3000,
+      });
+      navigate('/');
+    } catch (e) {
+      enqueueSnackbar('Что то пошло не так! ', {
+        variant: 'error',
+        autoHideDuration: 3000,
+      });
+      console.error(e);
+    }
   };
 
   return (
@@ -184,7 +201,6 @@ const QuizForm = () => {
               name="questionType"
               value={questionType}
               onChange={handleAddQuestion}
-              required
             >
               <MenuItem value="" disabled>
                 Выберите тип вопроса

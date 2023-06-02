@@ -18,7 +18,7 @@ const avatarStorage = multer.diskStorage({
 
 const imageStorage = multer.diskStorage({
   destination: async (_req, _file, cb) => {
-    const destDir = path.join(config.publicPath, 'images/photosDir');
+    const destDir = path.join(config.publicPath, 'images/quiz');
     await fs.mkdir(destDir, { recursive: true });
     cb(null, destDir);
   },

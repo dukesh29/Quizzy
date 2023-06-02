@@ -80,25 +80,25 @@ const run = async () => {
       category: categories[5]._id,
       author: admin._id,
       title: 'Кто сыграл в Марвел?',
-      picture: 'fixtures/marvel.jpeg',
+      picture: '/fixtures/marvel.jpeg',
     },
     {
       category: categories[7]._id,
       author: user._id,
       title: 'Великие футболисты',
-      picture: 'fixtures/soccer.jpeg',
+      picture: '/fixtures/soccer.jpeg',
     },
     {
       category: categories[4]._id,
       author: user._id,
       title: 'Великие хип-хоп исполнители',
-      picture: 'fixtures/hiphop.jpeg',
+      picture: '/fixtures/hiphop.jpeg',
     },
     {
       category: categories[16]._id,
       author: user2._id,
       title: 'Гонщики Формулы-1',
-      picture: 'fixtures/formula1.jpg',
+      picture: '/fixtures/formula1.jpg',
     },
   );
 
