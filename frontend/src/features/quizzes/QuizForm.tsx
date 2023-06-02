@@ -20,11 +20,13 @@ import { createQuiz } from './quizThunk';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './Quiz.scss';
 import { selectCreateQuizLoading } from './quizSlice';
+import { questionTypes } from '../../constants';
 
 const QuizForm = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const createLoading = useAppSelector(selectCreateQuizLoading);
+  const [questionType, setQuestionType] = useState('');
   const [state, setState] = useState<QuizDataMutation>({
     category: '',
     title: '',
@@ -32,17 +34,7 @@ const QuizForm = () => {
     picture: null,
   });
 
-  const [questions, setQuestions] = useState<QuestionDataMutation[]>([
-    {
-      text: '',
-      options: [
-        { variant: '', isCorrect: false },
-        { variant: '', isCorrect: false },
-        { variant: '', isCorrect: false },
-        { variant: '', isCorrect: false },
-      ],
-    },
-  ]);
+  const [questions, setQuestions] = useState<QuestionDataMutation[]>([]);
 
   const categories = useAppSelector(selectCategoriesList);
 
@@ -95,19 +87,35 @@ const QuizForm = () => {
     setQuestions(updatedQuestions);
   };
 
-  const handleAddQuestion = () => {
-    setQuestions([
-      ...questions,
-      {
-        text: '',
-        options: [
-          { variant: '', isCorrect: false },
-          { variant: '', isCorrect: false },
-          { variant: '', isCorrect: false },
-          { variant: '', isCorrect: false },
-        ],
-      },
-    ]);
+  const handleAddQuestion = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const type = e.target.value;
+    setQuestionType(type);
+    if (type === 'Правда или ложь') {
+      setQuestions((prevQuestions) => [
+        ...prevQuestions,
+        {
+          text: '',
+          options: [
+            { variant: 'Правда', isCorrect: false },
+            { variant: 'Ложь', isCorrect: false },
+          ],
+        },
+      ]);
+    } else {
+      setQuestions((prevQuestions) => [
+        ...prevQuestions,
+        {
+          text: '',
+          options: [
+            { variant: '', isCorrect: false },
+            { variant: '', isCorrect: false },
+            { variant: '', isCorrect: false },
+            { variant: '', isCorrect: false },
+          ],
+        },
+      ]);
+    }
+    setQuestionType('');
   };
 
   const handleDeleteQuestion = (index: number) => {
@@ -168,9 +176,25 @@ const QuizForm = () => {
             <FileInput onChange={fileInputChangeHandler} name="picture" label="Image" />
           </Grid>
           <Grid item xs sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button variant="outlined" color="secondary" onClick={handleAddQuestion}>
-              Добавить вопрос
-            </Button>
+            <TextField
+              color="secondary"
+              select
+              fullWidth
+              label="Добавить вопрос"
+              name="questionType"
+              value={questionType}
+              onChange={handleAddQuestion}
+              required
+            >
+              <MenuItem value="" disabled>
+                Выберите тип вопроса
+              </MenuItem>
+              {questionTypes.map((item) => (
+                <MenuItem key={item.type} value={item.type}>
+                  {item.type}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
           {questions.map((question, questionIndex) => (
             <React.Fragment key={questionIndex}>
@@ -187,13 +211,20 @@ const QuizForm = () => {
                   onChange={(event) => handleTextChange(event, questionIndex)}
                   required
                 />
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  onClick={() => handleDeleteQuestion(questionIndex)}
+
+                <Tooltip
+                  title="Удалить данный вопрос"
+                  TransitionComponent={Zoom}
+                  placement="top-end"
                 >
-                  <DeleteIcon />
-                </Button>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => handleDeleteQuestion(questionIndex)}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                </Tooltip>
               </Grid>
               {question.options.map((option, optionIndex) => (
                 <Grid key={optionIndex} item sx={{ display: 'flex', justifyContent: 'center' }}>
