@@ -11,6 +11,7 @@ import QuizForm from './features/quizzes/QuizForm';
 import { SnackbarProvider } from 'notistack';
 import MyQuizzes from './features/quizzes/MyQuizzes';
 import Home from './features/Home';
+import GameView from './features/quizzes/GameView';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -23,6 +24,7 @@ function App() {
               <Route path="/create_category" element={<CreateCategory />} />
             </Route>
             <Route path="/" element={<Home />} />
+            <Route path="/quiz/:id" element={<GameView />} />
             <Route element={<Protected user={user} />}>
               <Route path="/create_quiz" element={<QuizForm />} />
             </Route>
