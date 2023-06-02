@@ -20,13 +20,14 @@ const Home = () => {
   }, [dispatch]);
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCategoryId(event.target.value);
-    await dispatch(getAllQuizzes());
+    const categoryValue = event.target.value;
+    setCategoryId(categoryValue);
+    await dispatch(getAllQuizzes(`category=${categoryValue}`));
   };
 
   return (
     quizzes && (
-      <>
+      <div className="allQuizzes-block">
         <h2 className="quizzes__title">Все квизы</h2>
         <Grid>
           <TextField
@@ -36,12 +37,13 @@ const Home = () => {
             name="category"
             value={categoryId}
             onChange={handleChange}
-            sx={{ mb: 2 }}
+            sx={{ mb: 2, minWidth: '200px' }}
             required
           >
             <MenuItem value="" disabled>
               Выберите категорию
             </MenuItem>
+            <MenuItem value="">Все</MenuItem>
             {categories.map((category) => (
               <MenuItem key={category._id} value={category._id}>
                 {category.name}
@@ -66,7 +68,7 @@ const Home = () => {
             ))}
           </Grid>
         )}
-      </>
+      </div>
     )
   );
 };
