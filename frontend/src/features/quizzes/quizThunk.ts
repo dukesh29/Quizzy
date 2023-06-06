@@ -46,7 +46,7 @@ export const createQuiz = createAsyncThunk<
 
     await axiosApi.post('/quiz', formData);
   } catch (e) {
-    if (isAxiosError(e) && e.response && e.response.status === 400) {
+    if (isAxiosError(e) && e.response) {
       return rejectWithValue(e.response.data as ValidationError);
     }
     throw e;

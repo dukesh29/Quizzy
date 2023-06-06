@@ -42,7 +42,8 @@ const CategoryForm = () => {
     <form onSubmit={handleSubmit} className="category__form">
       <TextField
         id="outlined-basic"
-        sx={{ width: '400px' }}
+        sx={{ maxWidth: '500px' }}
+        fullWidth
         color="secondary"
         value={categoryName}
         onChange={handleCategoryNameChange}

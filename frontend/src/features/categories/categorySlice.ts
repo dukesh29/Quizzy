@@ -50,6 +50,7 @@ const categorySlice = createSlice({
     });
 
     builder.addCase(deleteCategory.pending, (state) => {
+      state.deleteError = null;
       state.deleteCategoryLoading = true;
     });
     builder.addCase(deleteCategory.fulfilled, (state) => {
@@ -71,4 +72,4 @@ export const selectCreateCategoryLoading = (state: RootState) =>
 export const selectDeleteCategoryLoading = (state: RootState) =>
   state.category.deleteCategoryLoading;
 export const selectCategoryError = (state: RootState) => state.category.categoryError;
-export const selectErrorRemove = (state: RootState) => state.category.deleteError;
+export const selectDeleteError = (state: RootState) => state.category.deleteError;

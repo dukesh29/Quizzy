@@ -1,13 +1,13 @@
 import React from 'react';
 import { Category } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { deleteCategory } from '../categoryThunk';
-import { selectDeleteCategoryLoading } from '../categorySlice';
+import { deleteCategory, fetchCategories } from '../categoryThunk';
+import { selectDeleteCategoryLoading, selectDeleteError } from '../categorySlice';
 import { Button, CircularProgress } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { selectUser } from '../../users/usersSlice';
-import '../category.scss';
 import { enqueueSnackbar } from 'notistack';
+import '../category.scss';
 
 interface Props {
   category: Category;
@@ -17,13 +17,23 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
   const dispatch = useAppDispatch();
   const deleteLoading = useAppSelector(selectDeleteCategoryLoading);
   const user = useAppSelector(selectUser);
-  const onDelete = (id: string) => {
+  const deleteError = useAppSelector(selectDeleteError);
+  const onDelete = async (id: string) => {
     if (window.confirm('Вы действительно хотите удалить?')) {
-      dispatch(deleteCategory(id));
-      enqueueSnackbar('Категория успешно удалена! ', {
-        variant: 'success',
-        autoHideDuration: 3000,
-      });
+      try {
+        await dispatch(deleteCategory(id)).unwrap();
+        dispatch(fetchCategories());
+        enqueueSnackbar('Категория успешно удалена! ', {
+          variant: 'success',
+          autoHideDuration: 3000,
+        });
+      } catch (e) {
+        enqueueSnackbar(`${deleteError?.message} `, {
+          variant: 'error',
+          autoHideDuration: 3000,
+        });
+        console.log(e);
+      }
     }
   };
 

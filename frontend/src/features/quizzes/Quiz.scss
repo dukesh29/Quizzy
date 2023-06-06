@@ -32,7 +32,7 @@
 }
 
 .quiz_image {
-  width: 40%;
+  width: 50%;
 }
 
 .timer {
@@ -81,7 +81,7 @@
 
   .answer {
     width: 40%;
-    padding: 10px;
+    padding: 15px 10px;
     text-align: center;
     font-weight: bold;
     background: linear-gradient(#aba2e7, #2f266c);
@@ -100,7 +100,7 @@
   .correct {
     background-color: green !important;
     width: 40%;
-    padding: 10px;
+    padding: 15px 10px;
     text-align: center;
     font-weight: bold;
     border: 1px solid $main;
@@ -114,7 +114,7 @@
   .wrong {
     background-color: red !important;
     width: 40%;
-    padding: 10px;
+    padding: 15px 10px;
     text-align: center;
     font-weight: bold;
     border: 1px solid $main;
@@ -154,4 +154,29 @@
   .quizzes__title {
     font-size: 25px;
   }
+  .quiz_image {
+    width: 65%;
+  }
+
+  .timer {
+    bottom: 20px;
+    left: 3%;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .oneQuiz-title {
+    font-size: 20px;
+  }
+
+  .timer {
+    bottom: 20px;
+    font-size: 20px;
+    width: 45px;
+    height: 45px;
+    left: 10%;
+  }
+
+
 }

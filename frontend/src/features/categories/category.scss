@@ -2,6 +2,7 @@
 
 .card {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 20px;
   border: 1px solid black;
@@ -43,6 +44,7 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
+
 }
 
 .category__cards {
@@ -55,6 +57,10 @@
 }
 
 @media (max-width: 720px) {
+  .card {
+    gap: 5px;
+    padding: 10px 10px;
+  }
   .category__title {
     font-size: 20px;
   }
@@ -64,7 +70,15 @@
   }
 
   .card__title {
-    font-size: 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    gap: 5px;
+    width: 75%;
+    flex-direction: column;
   }
 }
 

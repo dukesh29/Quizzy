@@ -19,7 +19,7 @@ export const createCategory = createAsyncThunk<
   try {
     await axiosApi.post('/categories/create', categoryMutation);
   } catch (e) {
-    if (isAxiosError(e) && e.response && e.response.status === 400) {
+    if (isAxiosError(e) && e.response) {
       return rejectWithValue(e.response.data as ValidationError);
     }
     throw e;
@@ -30,9 +30,10 @@ export const deleteCategory = createAsyncThunk<void, string, { rejectValue: Glob
   'categories/delete_category',
   async (id, { rejectWithValue }) => {
     try {
-      await axiosApi.delete('/categories/delete' + id);
+      const response = await axiosApi.delete('/categories/delete/' + id);
+      return response.data;
     } catch (e) {
-      if (isAxiosError(e) && e.response && e.response.status === 404) {
+      if (isAxiosError(e) && e.response) {
         return rejectWithValue(e.response.data as GlobalError);
       }
       throw e;
