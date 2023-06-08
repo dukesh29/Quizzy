@@ -8,6 +8,7 @@ import {
   logoutUser,
   refresh,
   registerUser,
+  updateUser,
 } from '../controllers/user-controller';
 import { registrationValidations } from '../services/user-service';
 import auth from '../middlewares/auth-middleware';
@@ -28,5 +29,6 @@ usersRouter.post('/logout', logoutUser);
 usersRouter.get('/activate/:link', activateUser);
 usersRouter.get('/refresh', refresh);
 usersRouter.get('/', auth, getUsers);
+usersRouter.put('/:id', auth, UploadAvatar.single('avatar'), updateUser);
 
 export default usersRouter;

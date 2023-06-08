@@ -85,6 +85,11 @@ $headerBorderRadius: 10px;
     font-size: $headerSize;
     font-weight: 700;
     background-color: $white;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #a69a9a;
+    }
   }
 
   &__logout-item {

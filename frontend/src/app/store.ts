@@ -9,7 +9,7 @@ import { quizReducer } from '../features/quizzes/quizSlice';
 const usersPersistConfig = {
   key: 'Quizzy:users',
   storage,
-  whitelist: ['user', 'accessToken'],
+  whitelist: ['user', 'accessToken', 'userToEdit'],
 };
 
 const rootReducer = combineReducers({

@@ -18,11 +18,11 @@ import { QuestionDataMutation, QuizDataMutation } from '../../types';
 import { selectUser } from '../users/usersSlice';
 import { createQuiz } from './quizThunk';
 import DeleteIcon from '@mui/icons-material/Delete';
-import './Quiz.scss';
 import { selectCreateQuizLoading } from './quizSlice';
 import { questionTypes } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 import { enqueueSnackbar } from 'notistack';
+import './Quiz.scss';
 
 const QuizForm = () => {
   const dispatch = useAppDispatch();

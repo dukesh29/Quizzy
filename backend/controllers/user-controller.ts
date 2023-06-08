@@ -13,6 +13,9 @@ import config from '../config';
 import { validationResult } from 'express-validator';
 import { ApiError } from '../exceptions/api-error';
 import mongoose from 'mongoose';
+import User from '../models/User';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 export const registerUser: RequestHandler = async (req, res, next) => {
   try {
@@ -35,6 +38,9 @@ export const registerUser: RequestHandler = async (req, res, next) => {
     };
     return res.send(data);
   } catch (error) {
+    if (req.file) {
+      await fs.unlink(req.file.path);
+    }
     if (error instanceof mongoose.Error.ValidationError) {
       return res.status(400).send(error);
     }
@@ -136,5 +142,47 @@ export const getUsers: RequestHandler = async (req, res, next) => {
     res.send(users);
   } catch (e) {
     next(e);
+  }
+};
+
+export const updateUser: RequestHandler = async (req, res, next) => {
+  try {
+    const id = req.params.id as string;
+    const { email, displayName, password } = req.body;
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).send({ error: 'Пользователь не найден.' });
+    }
+
+    if (email && email !== user.email) {
+      user.email = email;
+    }
+    if (displayName && displayName !== user.displayName) {
+      user.displayName = displayName;
+    }
+    if (password) {
+      user.password = password;
+    }
+
+    if (req.file) {
+      const avatar = 'images/avatars/' + req.file.filename;
+      if (user.avatar && user.avatar.includes('images')) {
+        await fs.unlink(path.join(config.publicPath, user.avatar));
+      }
+      user.avatar = avatar;
+    }
+
+    const result = await user.save();
+
+    return res.send({ message: 'Пользователь успешно отредактирован!', result });
+  } catch (error) {
+    if (req.file) {
+      await fs.unlink(req.file.path);
+    }
+    if (error instanceof mongoose.Error.ValidationError) {
+      return res.status(422).send(error);
+    }
+    return next(error);
   }
 };

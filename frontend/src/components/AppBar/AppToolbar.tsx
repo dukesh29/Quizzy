@@ -4,14 +4,17 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectUser } from '../../features/users/usersSlice';
 import { logout } from '../../features/users/usersThunk';
 import Hamburger from '../Hamburger/Hamburger';
-import { Avatar } from '@mui/material';
+import { Avatar, Tooltip, Zoom } from '@mui/material';
 import { noApiURL } from '../../constants';
 import './AppToolbar.scss';
+import ModalBody from '../ModalBody';
+import UserFormToEdit from '../../features/users/components/UserFormToEdit';
 
 const AppToolbar = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const toggleHamburger = () => {
     setIsOpen(!isOpen);
@@ -19,6 +22,11 @@ const AppToolbar = () => {
 
   const closeHamburger = () => {
     setIsOpen(false);
+  };
+
+  const openDialog = () => {
+    closeHamburger();
+    setModalOpen(true);
   };
 
   const logoutFunc = async () => {
@@ -67,15 +75,22 @@ const AppToolbar = () => {
           </div>
           {user ? (
             <div className="reverse">
-              <li className="navigation__greeting">
-                {user.avatar && (
-                  <Avatar
-                    alt={user.displayName}
-                    src={user.avatar.startsWith('http') ? user.avatar : noApiURL + user.avatar}
-                  />
-                )}
-                Привет {user.displayName}!
-              </li>
+              <Tooltip
+                TransitionComponent={Zoom}
+                disableFocusListener
+                title="Обновить профиль"
+                placement="bottom"
+              >
+                <li className="navigation__greeting" onClick={openDialog}>
+                  {user.avatar && (
+                    <Avatar
+                      alt={user.displayName}
+                      src={user.avatar.startsWith('http') ? user.avatar : noApiURL + user.avatar}
+                    />
+                  )}
+                  Привет {user.displayName}!
+                </li>
+              </Tooltip>
               <button className="navigation__logout-item" onClick={logoutFunc}>
                 Выйти
               </button>
@@ -92,6 +107,11 @@ const AppToolbar = () => {
           <Hamburger isOpen={isOpen} />
         </div>
       </nav>
+      {user && (
+        <ModalBody isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+          <UserFormToEdit setModal={() => setModalOpen(false)} id={user._id} />
+        </ModalBody>
+      )}
     </div>
   );
 };

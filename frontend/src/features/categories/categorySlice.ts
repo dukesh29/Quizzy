@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Category, GlobalError, ValidationError } from '../../types';
+import { Category, ValidationError } from '../../types';
 import { createCategory, deleteCategory, fetchCategories } from './categoryThunk';
 import { RootState } from '../../app/store';
 
@@ -9,7 +9,6 @@ interface categoryState {
   createCategoryLoading: boolean;
   deleteCategoryLoading: boolean;
   categoryError: ValidationError | null;
-  deleteError: GlobalError | null;
 }
 
 const initialState: categoryState = {
@@ -18,7 +17,6 @@ const initialState: categoryState = {
   createCategoryLoading: false,
   deleteCategoryLoading: false,
   categoryError: null,
-  deleteError: null,
 };
 
 const categorySlice = createSlice({
@@ -50,15 +48,13 @@ const categorySlice = createSlice({
     });
 
     builder.addCase(deleteCategory.pending, (state) => {
-      state.deleteError = null;
       state.deleteCategoryLoading = true;
     });
     builder.addCase(deleteCategory.fulfilled, (state) => {
       state.deleteCategoryLoading = false;
     });
-    builder.addCase(deleteCategory.rejected, (state, { payload: error }) => {
+    builder.addCase(deleteCategory.rejected, (state) => {
       state.deleteCategoryLoading = false;
-      state.deleteError = error || null;
     });
   },
 });
@@ -72,4 +68,3 @@ export const selectCreateCategoryLoading = (state: RootState) =>
 export const selectDeleteCategoryLoading = (state: RootState) =>
   state.category.deleteCategoryLoading;
 export const selectCategoryError = (state: RootState) => state.category.categoryError;
-export const selectDeleteError = (state: RootState) => state.category.deleteError;

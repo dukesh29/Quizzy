@@ -2,13 +2,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   GlobalError,
   LoginMutation,
+  User,
   UserMutation,
   UserResponse,
   ValidationError,
 } from '../../types';
 import axiosApi from '../../axios';
 import { isAxiosError } from 'axios';
-import { RootState } from '../../app/store';
+import { AppDispatch, RootState } from '../../app/store';
 import { unsetUser } from './usersSlice';
 import { ProfileSuccessResponse } from '@greatsumini/react-facebook-login';
 
@@ -78,6 +79,35 @@ export const facebookLogin = createAsyncThunk<
     if (isAxiosError(e) && e.response && e.response.status === 400)
       return rejectWithValue(e.response.data as GlobalError);
 
+    throw e;
+  }
+});
+
+interface UpdateUserParams {
+  id: string;
+  userToUpdate: UserMutation;
+}
+
+export const updateUser = createAsyncThunk<
+  User,
+  UpdateUserParams,
+  { rejectValue: ValidationError; dispatch: AppDispatch; state: RootState }
+>('users/editOne', async (params, { rejectWithValue }) => {
+  try {
+    const formData = new FormData();
+
+    formData.append('email', params.userToUpdate.email);
+    formData.append('displayName', params.userToUpdate.displayName);
+    formData.append('password', params.userToUpdate.password);
+    if (params.userToUpdate.avatar !== null) {
+      formData.append('avatar', params.userToUpdate.avatar);
+    }
+    const response = await axiosApi.put('users/' + params.id, formData);
+    return response.data.result;
+  } catch (e) {
+    if (isAxiosError(e) && e.response && e.response.status === 400) {
+      return rejectWithValue(e.response.data as ValidationError);
+    }
     throw e;
   }
 });
