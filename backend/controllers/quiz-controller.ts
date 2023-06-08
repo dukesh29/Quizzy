@@ -8,6 +8,7 @@ import {
   deleteQuizService,
   getAllQuizzesService,
   getQuizByIdService,
+  updateQuizRatingService,
 } from '../services/quiz-service';
 import { QuizDataToCreate } from '../types';
 
@@ -60,6 +61,17 @@ export const createQuiz: RequestHandler = async (req, res, next) => {
       return res.status(400).send(error);
     }
     next(error);
+  }
+};
+
+export const updateQuizRating: RequestHandler = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const { rating, user } = req.body;
+    const quiz = await updateQuizRatingService(rating, user, id);
+    return res.send({ id: quiz._id, rating: quiz.rating });
+  } catch (e) {
+    next(e);
   }
 };
 

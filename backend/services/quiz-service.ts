@@ -3,6 +3,7 @@ import { QuizDataToCreate } from '../types';
 import Question from '../models/Question';
 import { promises as fs } from 'fs';
 import { ApiError } from '../exceptions/api-error';
+import { Types } from 'mongoose';
 
 export const getAllQuizzesService = async (categoryId?: string, userId?: string) => {
   let query = Quiz.find().populate([
@@ -67,4 +68,21 @@ export const deleteQuizService = async (id: string) => {
     await Quiz.findByIdAndDelete(id);
     await Question.deleteMany({ quiz: id });
   }
+};
+
+export const updateQuizRatingService = async (rating: number, user: string, id: string) => {
+  const quiz = await Quiz.findById(id);
+  if (!quiz) {
+    throw ApiError.NotFound('Данный квиз не найден!');
+  }
+  const existingRating = quiz.rating.find((r) => r.user.toString() === user);
+  if (existingRating) {
+    existingRating.ratingValue = rating;
+  } else {
+    await quiz.rating.push({ user: new Types.ObjectId(user), ratingValue: rating });
+  }
+
+  await quiz.save();
+
+  return quiz;
 };

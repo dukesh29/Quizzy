@@ -36,6 +36,30 @@ const QuizSchema = new Schema({
     default: Date.now,
   },
   picture: String,
+  rating: {
+    type: [
+      {
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+          required: true,
+          validate: {
+            validator: async (value: Types.ObjectId) => {
+              const user = await User.findById(value);
+              return user !== null;
+            },
+            message: 'Данный пользователь не существует!',
+          },
+        },
+        ratingValue: {
+          type: Number,
+          required: true,
+          default: null,
+        },
+      },
+    ],
+    default: [],
+  },
 });
 
 const Quiz = model('Quiz', QuizSchema);

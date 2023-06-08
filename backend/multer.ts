@@ -6,7 +6,7 @@ import config from './config';
 
 const avatarStorage = multer.diskStorage({
   destination: async (_req, _file, cb) => {
-    const destDir = path.join(config.publicPath, 'images/avatarsDir');
+    const destDir = path.join(config.publicPath, 'images/avatars');
     await fs.mkdir(destDir, { recursive: true });
     cb(null, destDir);
   },

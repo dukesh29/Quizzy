@@ -63,8 +63,3 @@ export interface QuestionDataCreate {
   text: string;
   options: OptionFormData[];
 }
-
-export interface Query {
-  category?: string;
-  author?: string;
-}
