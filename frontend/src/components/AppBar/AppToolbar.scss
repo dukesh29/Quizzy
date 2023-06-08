@@ -75,6 +75,10 @@ $headerBorderRadius: 10px;
   }
 
   &__greeting {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
     border-radius: $headerBorderRadius;
     padding: 5px;
     color: $black;

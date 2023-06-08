@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Button, Grid, TextField } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 
 interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -7,9 +8,10 @@ interface Props {
   label: string;
   error?: boolean;
   value?: File | null;
+  isRegister?: boolean;
 }
 
-const FileInput: React.FC<Props> = ({ onChange, name, label, error, value }) => {
+const FileInput: React.FC<Props> = ({ onChange, name, label, error, value, isRegister }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [filename, setFilename] = useState('');
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,8 +52,12 @@ const FileInput: React.FC<Props> = ({ onChange, name, label, error, value }) => 
           />
         </Grid>
         <Grid item>
-          <Button variant="outlined" color="secondary" onClick={activateInput}>
-            Загрузить
+          <Button
+            variant="text"
+            sx={{ color: isRegister ? 'white' : '#776BCC' }}
+            onClick={activateInput}
+          >
+            <SendIcon />
           </Button>
         </Grid>
       </Grid>

@@ -4,6 +4,8 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectUser } from '../../features/users/usersSlice';
 import { logout } from '../../features/users/usersThunk';
 import Hamburger from '../Hamburger/Hamburger';
+import { Avatar } from '@mui/material';
+import { noApiURL } from '../../constants';
 import './AppToolbar.scss';
 
 const AppToolbar = () => {
@@ -51,21 +53,29 @@ const AppToolbar = () => {
                     Результаты
                   </Link>
                 </li>
+                <li className="navigation__item">
+                  <Link
+                    to={`/myquizzes/${user?._id}`}
+                    className="navigation__link"
+                    onClick={closeHamburger}
+                  >
+                    Мои квизы
+                  </Link>
+                </li>
               </>
             )}
-            <li className="navigation__item">
-              <Link
-                to={`/myquizzes/${user?._id}`}
-                className="navigation__link"
-                onClick={closeHamburger}
-              >
-                Мои квизы
-              </Link>
-            </li>
           </div>
           {user ? (
             <div className="reverse">
-              <li className="navigation__greeting">Привет {user.displayName}!</li>
+              <li className="navigation__greeting">
+                {user.avatar && (
+                  <Avatar
+                    alt={user.displayName}
+                    src={user.avatar.startsWith('http') ? user.avatar : noApiURL + user.avatar}
+                  />
+                )}
+                Привет {user.displayName}!
+              </li>
               <button className="navigation__logout-item" onClick={logoutFunc}>
                 Выйти
               </button>
