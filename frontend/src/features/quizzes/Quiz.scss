@@ -32,7 +32,7 @@
 }
 
 .quiz_image {
-  width: 50%;
+  width: 43%;
 }
 
 .timer {
@@ -154,13 +154,14 @@
   .quizzes__title {
     font-size: 25px;
   }
-  .quiz_image {
-    width: 65%;
-  }
 
   .timer {
     bottom: 20px;
     left: 3%;
+  }
+
+  .quiz_image {
+    width: 50%;
   }
 }
 
@@ -168,6 +169,10 @@
 
   .oneQuiz-title {
     font-size: 20px;
+  }
+
+  .quiz_image {
+    width: 70%;
   }
 
   .timer {

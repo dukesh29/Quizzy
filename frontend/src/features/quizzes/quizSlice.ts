@@ -1,7 +1,7 @@
 import { QuizData, QuizFromDB, ValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { createQuiz, deleteQuiz, getAllQuizzes, getOneQuiz } from './quizThunk';
+import { createQuiz, deleteQuiz, getAllQuizzes, getOneQuiz, updateQuizRating } from './quizThunk';
 
 interface QuizState {
   items: QuizData[] | null;
@@ -69,6 +69,13 @@ const quizSlice = createSlice({
     });
     builder.addCase(deleteQuiz.rejected, (state) => {
       state.deleteQuizLoading = false;
+    });
+    builder.addCase(updateQuizRating.fulfilled, (state, action) => {
+      const { id, rating } = action.payload;
+      const quiz = state.items && state.items.find((q) => q._id === id);
+      if (quiz) {
+        quiz.rating = rating;
+      }
     });
   },
 });

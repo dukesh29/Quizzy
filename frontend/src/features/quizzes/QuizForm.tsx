@@ -36,7 +36,6 @@ const QuizForm = () => {
     author: user && user._id,
     picture: null,
   });
-  console.log(state);
 
   const [questions, setQuestions] = useState<QuestionDataMutation[]>([]);
 
@@ -129,12 +128,14 @@ const QuizForm = () => {
   const submitFormHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await dispatch(createQuiz({ quiz: state, questions: questions })).unwrap();
-      enqueueSnackbar('Вы успешно создали Quiz! ', {
-        variant: 'success',
-        autoHideDuration: 3000,
-      });
-      navigate('/');
+      if (window.confirm('Вы действительно хотите создать новый квиз?')) {
+        await dispatch(createQuiz({ quiz: state, questions: questions })).unwrap();
+        enqueueSnackbar('Вы успешно создали Quiz! ', {
+          variant: 'success',
+          autoHideDuration: 3000,
+        });
+        navigate('/');
+      }
     } catch (e) {
       enqueueSnackbar('Что то пошло не так! ', {
         variant: 'error',
@@ -192,26 +193,6 @@ const QuizForm = () => {
           <Grid item xs>
             <FileInput onChange={fileInputChangeHandler} name="picture" label="Image" />
           </Grid>
-          <Grid item xs sx={{ display: 'flex', justifyContent: 'center' }}>
-            <TextField
-              color="secondary"
-              select
-              fullWidth
-              label="Добавить вопрос"
-              name="questionType"
-              value={questionType}
-              onChange={handleAddQuestion}
-            >
-              <MenuItem value="" disabled>
-                Выберите тип вопроса
-              </MenuItem>
-              {questionTypes.map((item) => (
-                <MenuItem key={item.type} value={item.type}>
-                  {item.type}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
           {questions.map((question, questionIndex) => (
             <React.Fragment key={questionIndex}>
               <Typography component="h1" variant="h5" sx={{ mt: 3, mb: 2, textAlign: 'center' }}>
@@ -235,7 +216,7 @@ const QuizForm = () => {
                 >
                   <Button
                     variant="outlined"
-                    color="secondary"
+                    sx={{ color: '#776BCC', border: '1px solid #776BCC' }}
                     onClick={() => handleDeleteQuestion(questionIndex)}
                   >
                     <DeleteIcon />
@@ -268,9 +249,34 @@ const QuizForm = () => {
               ))}
             </React.Fragment>
           ))}
+          <Grid item xs sx={{ display: 'flex', justifyContent: 'center' }}>
+            <TextField
+              color="secondary"
+              select
+              fullWidth
+              label="Добавить вопрос"
+              name="questionType"
+              value={questionType}
+              onChange={handleAddQuestion}
+            >
+              <MenuItem value="" disabled>
+                Выберите тип вопроса
+              </MenuItem>
+              {questionTypes.map((item) => (
+                <MenuItem key={item.type} value={item.type}>
+                  {item.type}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
           <div className="button-group">
             <Grid item>
-              <Button disabled={createLoading} variant="outlined" type="submit" color="secondary">
+              <Button
+                disabled={createLoading}
+                sx={{ color: '#776BCC', border: '1px solid #776BCC' }}
+                variant="outlined"
+                type="submit"
+              >
                 {createLoading ? (
                   <CircularProgress color="secondary" size="small" />
                 ) : (

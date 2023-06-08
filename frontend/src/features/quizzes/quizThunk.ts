@@ -53,6 +53,14 @@ export const createQuiz = createAsyncThunk<
   }
 });
 
+export const updateQuizRating = createAsyncThunk(
+  'quiz/updateRating',
+  async ({ rating, user, id }: { rating: number | null; user: string; id: string }) => {
+    const response = await axiosApi.patch('/quiz/' + id + '/rating', { rating, user, quiz: id });
+    return response.data;
+  },
+);
+
 export const deleteQuiz = createAsyncThunk<void, string>('quizzes/deleteQuiz', async (id) => {
   await axiosApi.delete('/quiz/' + id);
 });

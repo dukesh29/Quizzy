@@ -11,6 +11,7 @@ export interface UserMutation {
   email: string;
   password: string;
   displayName: string;
+  avatar: File | null;
 }
 
 export interface LoginMutation {
@@ -70,6 +71,11 @@ export interface QuizItemMutation {
   questions: QuestionDataMutation[];
 }
 
+export interface RatingType {
+  ratingValue: number;
+  user: string;
+}
+
 export interface QuizData {
   _id: string;
   title: string;
@@ -83,6 +89,7 @@ export interface QuizData {
     displayName: string;
   };
   createdAt: Date;
+  rating: RatingType[];
 }
 
 export interface QuestionData {

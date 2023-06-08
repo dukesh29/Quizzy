@@ -8,6 +8,7 @@ import {
   CircularProgress,
   Link,
   Typography,
+  Box,
 } from '@mui/material';
 import { QuizData } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
@@ -18,6 +19,7 @@ import dayjs from 'dayjs';
 import { deleteQuiz, getAllQuizzes } from '../quizThunk';
 import { selectDeleteQuizLoading } from '../quizSlice';
 import { enqueueSnackbar } from 'notistack';
+import RatingCard from './RatingCard';
 
 interface QuizCardProps {
   quiz: QuizData;
@@ -43,7 +45,14 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
 
   return (
     <>
-      <Card sx={{ pb: 1, height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Card
+        sx={{
+          pb: 1,
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         <CardMedia
           component="img"
           height="250px"
@@ -57,9 +66,15 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
             },
           }}
         />
-        <Typography component="p" sx={{ fontSize: '12px', p: 1, m: 0, textAlign: 'right' }}>
-          Создан: {dayjs(quiz.createdAt).format('YYYY-MM-DD HH:mm')}
-        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 1 }}>
+          <Typography
+            component="p"
+            sx={{ fontSize: '12px', p: 1, m: 0, textAlign: 'right', fontStyle: 'italic' }}
+          >
+            Создан: {dayjs(quiz.createdAt).format('YYYY-MM-DD HH:mm')}
+          </Typography>
+          <RatingCard id={quiz._id} rating={quiz.rating} />
+        </Box>
         <CardContent
           sx={{
             display: 'flex',
@@ -70,14 +85,18 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
           }}
         >
           <Typography />
-          <Typography sx={{ mb: 2 }} component="h3" variant="h6">
+          <Typography
+            sx={{ mb: 2, color: '#260d0d', fontWeight: 'bold' }}
+            component="h3"
+            variant="h5"
+          >
             {quiz.title}
           </Typography>
           <Link
             component={RouterLink}
             to={`/myquizzes/${quiz.author._id}`}
             sx={{
-              color: 'black',
+              color: '#2a2070',
               mb: 2,
               fontWeight: 'bold',
               textDecoration: 'none',
@@ -93,21 +112,19 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
         <CardActions sx={{ display: 'flex', alignItems: 'flex-end', marginTop: 'auto' }}>
           <Button
             size="small"
-            color="secondary"
+            sx={{ mx: 'auto', color: '#776BCC', border: '1px solid #776BCC' }}
             variant="outlined"
             onClick={() => startQuiz(quiz._id)}
-            sx={{ mx: 'auto' }}
           >
             {deleteLoading ? <CircularProgress color="secondary" size="small" /> : 'Начать квиз'}
           </Button>
           {user && (user._id === quiz.author._id || user.role === 'admin') && (
             <Button
               size="small"
-              color="secondary"
+              sx={{ mx: 'auto', color: '#776BCC', border: '1px solid #776BCC' }}
               variant="outlined"
               onClick={() => handleDelete(quiz._id)}
               disabled={deleteLoading}
-              sx={{ mx: 'auto' }}
             >
               {deleteLoading ? <CircularProgress color="secondary" size="small" /> : 'Удалить'}
             </Button>
