@@ -53,7 +53,12 @@ const CategoryForm = () => {
         required
         helperText={getFieldError('name')}
       />
-      <Button variant="outlined" color="secondary" type="submit" disabled={loading}>
+      <Button
+        variant="outlined"
+        sx={{ color: '#776BCC', border: '1px solid #776BCC' }}
+        type="submit"
+        disabled={loading}
+      >
         {loading ? <CircularProgress color="secondary" size="small" /> : 'Создать категорию'}
       </Button>
     </form>

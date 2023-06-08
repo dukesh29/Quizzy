@@ -44,7 +44,7 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
         <>
           <Button
             variant="outlined"
-            color="secondary"
+            sx={{ color: '#776BCC', border: '1px solid #776BCC' }}
             onClick={() => onDelete(category._id)}
             disabled={deleteLoading}
           >
