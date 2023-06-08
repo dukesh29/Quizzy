@@ -7,7 +7,7 @@ import KeyIcon from '@mui/icons-material/Key';
 import AccessibilityNewSharpIcon from '@mui/icons-material/AccessibilityNewSharp';
 import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 import VisibilityOffSharpIcon from '@mui/icons-material/VisibilityOffSharp';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { createUser } from './usersThunk';
 import { CircularProgress } from '@mui/material';
@@ -15,6 +15,7 @@ import { selectRegisterError, selectRegisterLoading } from './usersSlice';
 import SocialSiteLogin from './components/SocialSiteLogin';
 import './styles/RegisterForm.scss';
 import { enqueueSnackbar } from 'notistack';
+import FileInput from '../../components/FileInput/FileInput';
 
 const RegisterForm = () => {
   const dispatch = useAppDispatch();
@@ -27,6 +28,7 @@ const RegisterForm = () => {
     handleSubmit,
     setError,
     reset,
+    control,
     formState: { errors, isValid },
   } = useForm<UserMutation>({
     mode: 'onBlur',
@@ -65,6 +67,10 @@ const RegisterForm = () => {
       setError('displayName', {
         type: 'manual',
         message: getFieldError('displayName'),
+      });
+      setError('avatar', {
+        type: 'manual',
+        message: getFieldError('avatar'),
       });
     }
   };
@@ -127,6 +133,23 @@ const RegisterForm = () => {
               placeholder="Никнейм"
             />
             {errors?.displayName && <div className="error">{errors.displayName.message}</div>}
+          </div>
+          <div className="register__field">
+            <Controller
+              name="avatar"
+              control={control}
+              defaultValue={null}
+              rules={{ required: 'Аватар обязателен' }}
+              render={({ field }) => (
+                <FileInput
+                  onChange={(e) => field.onChange(e.target?.files ? e.target.files[0] : null)}
+                  name={field.name}
+                  label="Аватар"
+                  error={Boolean(errors.avatar)}
+                  isRegister
+                />
+              )}
+            />
           </div>
           <button type="submit" disabled={!isValid} className="button register__submit">
             {loading ? <CircularProgress color="secondary" size="small" /> : 'Зарегистрироваться'}

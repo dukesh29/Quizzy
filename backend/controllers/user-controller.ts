@@ -21,8 +21,10 @@ export const registerUser: RequestHandler = async (req, res, next) => {
     if (!errors.isEmpty()) {
       return next(ApiError.BadRequest('Ошибка при валидации', errors.array() as []));
     }
+
+    const avatar = req.file ? 'images/avatars/' + req.file.filename : null;
     const { email, password, displayName } = req.body;
-    const userData = await registerService(email, password, displayName);
+    const userData = await registerService(email, password, displayName, avatar);
     res.cookie('refreshToken', userData.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,

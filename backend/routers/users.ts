@@ -11,10 +11,16 @@ import {
 } from '../controllers/user-controller';
 import { registrationValidations } from '../services/user-service';
 import auth from '../middlewares/auth-middleware';
+import { UploadAvatar } from '../multer';
 
 const usersRouter = express.Router();
 
-usersRouter.post('/registration', registrationValidations, registerUser);
+usersRouter.post(
+  '/registration',
+  UploadAvatar.single('avatar'),
+  registrationValidations,
+  registerUser,
+);
 usersRouter.post('/login', loginUser);
 usersRouter.post('/google', loginGoogleUser);
 usersRouter.post('/facebook', loginFacebookUser);

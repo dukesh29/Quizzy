@@ -18,7 +18,15 @@ export const createUser = createAsyncThunk<
   { rejectValue: ValidationError }
 >('users/create', async (registerMutation, { rejectWithValue }) => {
   try {
-    const response = await axiosApi.post<UserResponse>('/users/registration', registerMutation);
+    const formData = new FormData();
+    formData.append('email', registerMutation.email);
+    formData.append('displayName', registerMutation.displayName);
+    formData.append('password', registerMutation.password);
+    if (registerMutation.avatar) {
+      formData.append('avatar', registerMutation.avatar);
+    }
+
+    const response = await axiosApi.post<UserResponse>('/users/registration', formData);
     return response.data;
   } catch (e) {
     if (isAxiosError(e) && e.response && e.response.status === 400) {

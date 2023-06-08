@@ -29,10 +29,21 @@ const registrationValidators = [
 
 export const registrationValidations = [...registrationValidators];
 
-export const registerService = async (email: string, password: string, displayName: string) => {
+export const registerService = async (
+  email: string,
+  password: string,
+  displayName: string,
+  avatar: string | null,
+) => {
   const activationLink = crypto.randomUUID();
   await sendActivationMail(email, `${process.env.API_URL}/api/users/activate/${activationLink}`);
-  const user = await User.create({ email, password, displayName, activationLink });
+  const user = await User.create({
+    email,
+    password,
+    displayName,
+    activationLink,
+    avatar: avatar !== null ? avatar : null,
+  });
   const newUser = user.toJSON();
   const tokens = generateTokens({ ...newUser });
   await saveToken(newUser._id.toString(), tokens.refreshToken);
