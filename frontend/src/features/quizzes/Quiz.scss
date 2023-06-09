@@ -3,7 +3,6 @@
 .main-block {
   display: flex;
   flex-direction: column;
-  height: 100vh;
 }
 
 .allQuizzes-block {
@@ -16,7 +15,7 @@
 
 .top {
   height: 30%;
-  min-height: 355px;
+  min-height: 385px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -32,7 +31,7 @@
 }
 
 .quiz_image {
-  width: 43%;
+  width: 40%;
 }
 
 .timer {
@@ -96,34 +95,6 @@
       background: linear-gradient(#201567, #9385f3);
     }
   }
-
-  .correct {
-    background-color: green !important;
-    width: 40%;
-    padding: 15px 10px;
-    text-align: center;
-    font-weight: bold;
-    border: 1px solid $main;
-    color: $white;
-    border-radius: 10px;
-    margin: 0 10px 20px 10px;
-    cursor: pointer;
-    box-shadow: 0 5px 10px 2px rgba(34, 60, 80, 0.2);
-  }
-
-  .wrong {
-    background-color: red !important;
-    width: 40%;
-    padding: 15px 10px;
-    text-align: center;
-    font-weight: bold;
-    border: 1px solid $main;
-    color: $white;
-    border-radius: 10px;
-    margin: 0 10px 20px 10px;
-    cursor: pointer;
-    box-shadow: 0 5px 10px 2px rgba(34, 60, 80, 0.2);
-  }
 }
 
 .button-group {
@@ -137,8 +108,47 @@
   align-self: center;
   text-align: center;
   margin: 35px 0 25px 0;
-  font-size: 40px;
+  font-size: 30px;
   background-color: $black;
+  padding: 5px;
+  color: $white;
+  border-radius: 10px;
+}
+
+.question_number {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 5px solid $main;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: $black;
+  font-size: 30px;
+  position: absolute;
+  bottom: 45px;
+  right: 10%;
+}
+
+.result-block {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 50px;
+}
+
+.result-title {
+  text-align: center;
+}
+
+.result-review {
+  text-align: center;
+  max-width: 500px;
+  align-self: center;
+  font-size: 30px;
+  background-color: $main;
   padding: 5px;
   color: $white;
   border-radius: 10px;
@@ -157,7 +167,18 @@
 
   .timer {
     bottom: 20px;
-    left: 3%;
+    font-size: 20px;
+    width: 45px;
+    height: 45px;
+    left: 10%;
+  }
+
+  .question_number {
+    bottom: 20px;
+    font-size: 17px;
+    width: 45px;
+    height: 45px;
+    right: 10%;
   }
 
   .quiz_image {
@@ -167,21 +188,34 @@
 
 @media (max-width: 480px) {
 
+  .top {
+    min-height: 355px;
+  }
+
   .oneQuiz-title {
     font-size: 20px;
   }
 
   .quiz_image {
-    width: 70%;
+    width: 60%;
   }
 
-  .timer {
+  .question_number {
     bottom: 20px;
-    font-size: 20px;
+    font-size: 15px;
     width: 45px;
     height: 45px;
-    left: 10%;
+    right: 10%;
+  }
+}
+
+@media (max-width: 350px) {
+  .top {
+    min-height: 335px;
   }
 
-
+  .quiz_image {
+    width: 70%;
+  }
 }
+

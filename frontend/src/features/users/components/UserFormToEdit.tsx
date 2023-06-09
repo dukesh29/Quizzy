@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Alert, Box, Button, CircularProgress, Grid, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, Grid, TextField } from '@mui/material';
 import { UserMutation } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectEditingError, selectEditOneUserLoading, selectUserToEdit } from '../usersSlice';
 import FileInput from '../../../components/FileInput/FileInput';
 import { updateUser } from '../usersThunk';
 import { enqueueSnackbar } from 'notistack';
+import { getAllQuizzes } from '../../quizzes/quizThunk';
+import '../styles/styles.scss';
 
 interface Props {
   id: string;
@@ -37,6 +39,7 @@ const UserFormToEdit: React.FC<Props> = ({ id, setModal }) => {
         variant: 'success',
         autoHideDuration: 2000,
       });
+      dispatch(getAllQuizzes());
     } catch (e) {
       enqueueSnackbar('Что то пошло не так! ', {
         variant: 'error',
@@ -61,9 +64,7 @@ const UserFormToEdit: React.FC<Props> = ({ id, setModal }) => {
         flexDirection: 'column',
       }}
     >
-      <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
-        Обновить профиль
-      </Typography>
+      <h2 className="updateProfile-title">Обновить профиль</h2>
       {error && (
         <Alert severity="error" sx={{ mt: 3, width: '100%' }}>
           {error.message}

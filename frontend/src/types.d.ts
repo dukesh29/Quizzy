@@ -76,6 +76,15 @@ export interface RatingType {
   user: string;
 }
 
+export interface ResultType {
+  user: {
+    _id: string;
+    displayName: string;
+  };
+  correct: number;
+  createdAt: Date;
+}
+
 export interface QuizData {
   _id: string;
   title: string;
@@ -90,6 +99,7 @@ export interface QuizData {
   };
   createdAt: Date;
   rating: RatingType[];
+  result: ResultType[];
 }
 
 export interface QuestionData {
@@ -107,4 +117,12 @@ export interface QuestionDataExample {
 export interface QuizFromDB {
   quiz: QuizData;
   questions: QuestionData[];
+}
+
+export interface MyResultType {
+  quizId: string;
+  quizTitle: string;
+  displayName: string;
+  correct: number;
+  createdAt: Date;
 }

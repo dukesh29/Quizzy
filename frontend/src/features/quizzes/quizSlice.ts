@@ -1,7 +1,15 @@
-import { QuizData, QuizFromDB, ValidationError } from '../../types';
+import { MyResultType, QuizData, QuizFromDB, ValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { createQuiz, deleteQuiz, getAllQuizzes, getOneQuiz, updateQuizRating } from './quizThunk';
+import {
+  createQuiz,
+  deleteQuiz,
+  getAllQuizzes,
+  getOneQuiz,
+  getUserResults,
+  updateQuizRating,
+  updateQuizResult,
+} from './quizThunk';
 
 interface QuizState {
   items: QuizData[] | null;
@@ -11,7 +19,9 @@ interface QuizState {
   createQuizError: ValidationError | null;
   createQuizLoading: boolean;
   deleteQuizLoading: boolean;
-  timer: number;
+  quizResult: number;
+  QuizResults: MyResultType[] | null;
+  getUserResultLoading: boolean;
 }
 
 const initialState: QuizState = {
@@ -22,13 +32,22 @@ const initialState: QuizState = {
   createQuizError: null,
   createQuizLoading: false,
   deleteQuizLoading: false,
-  timer: 30,
+  quizResult: 0,
+  QuizResults: null,
+  getUserResultLoading: false,
 };
 
 const quizSlice = createSlice({
   name: 'quizzes',
   initialState,
-  reducers: {},
+  reducers: {
+    addResult: (state) => {
+      state.quizResult = state.quizResult + 1;
+    },
+    unsetResult: (state) => {
+      state.quizResult = 0;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getAllQuizzes.pending, (state) => {
       state.allQuizLoading = true;
@@ -41,6 +60,7 @@ const quizSlice = createSlice({
       state.allQuizLoading = false;
     });
     builder.addCase(getOneQuiz.pending, (state) => {
+      state.quizResult = 0;
       state.oneQuiz = null;
       state.oneQuizLoading = true;
     });
@@ -77,10 +97,30 @@ const quizSlice = createSlice({
         quiz.rating = rating;
       }
     });
+    builder.addCase(updateQuizResult.fulfilled, (state, action) => {
+      const quiz = action.payload;
+      state.oneQuiz = action.payload;
+      const findOneQuiz = state.items && state.items.find((q) => q._id === quiz._id);
+      if (findOneQuiz) {
+        findOneQuiz.result = quiz.result;
+      }
+    });
+    builder.addCase(getUserResults.pending, (state) => {
+      state.getUserResultLoading = true;
+    });
+    builder.addCase(getUserResults.fulfilled, (state, { payload: results }) => {
+      state.getUserResultLoading = false;
+      state.QuizResults = results;
+    });
+    builder.addCase(getUserResults.rejected, (state) => {
+      state.getUserResultLoading = false;
+    });
   },
 });
 
 export const quizReducer = quizSlice.reducer;
+
+export const { addResult, unsetResult } = quizSlice.actions;
 
 export const selectQuizzes = (state: RootState) => state.quiz.items;
 export const selectQuizzesLoading = (state: RootState) => state.quiz.allQuizLoading;
@@ -89,3 +129,6 @@ export const selectOneQuizLoading = (state: RootState) => state.quiz.oneQuizLoad
 export const selectCreateQuizLoading = (state: RootState) => state.quiz.createQuizLoading;
 export const selectCreateQuizError = (state: RootState) => state.quiz.createQuizError;
 export const selectDeleteQuizLoading = (state: RootState) => state.quiz.deleteQuizLoading;
+export const selectResult = (state: RootState) => state.quiz.quizResult;
+export const selectUserResults = (state: RootState) => state.quiz.QuizResults;
+export const selectUserResultsLoading = (state: RootState) => state.quiz.getUserResultLoading;

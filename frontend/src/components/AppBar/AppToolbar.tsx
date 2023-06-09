@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectUser } from '../../features/users/usersSlice';
 import { logout } from '../../features/users/usersThunk';
@@ -13,6 +13,7 @@ import UserFormToEdit from '../../features/users/components/UserFormToEdit';
 const AppToolbar = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -33,6 +34,7 @@ const AppToolbar = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
       await dispatch(logout());
       setIsOpen(false);
+      navigate('/');
     }
   };
 
@@ -57,8 +59,12 @@ const AppToolbar = () => {
                   </Link>
                 </li>
                 <li className="navigation__item">
-                  <Link to="/scores" className="navigation__link" onClick={closeHamburger}>
-                    Результаты
+                  <Link
+                    to={`/myquizresults/${user?._id}`}
+                    className="navigation__link"
+                    onClick={closeHamburger}
+                  >
+                    Мои результаты
                   </Link>
                 </li>
                 <li className="navigation__item">

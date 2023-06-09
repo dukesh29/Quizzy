@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { QuizData, QuizFromDB, QuizItemMutation, ValidationError } from '../../types';
+import { MyResultType, QuizData, QuizFromDB, QuizItemMutation, ValidationError } from '../../types';
 import axiosApi from '../../axios';
 import { isAxiosError } from 'axios';
 
@@ -16,6 +16,14 @@ export const getOneQuiz = createAsyncThunk<QuizFromDB, string>('quizzes/getOne',
   const response = await axiosApi.get<QuizFromDB>(`/quiz/${id}`);
   return response.data;
 });
+
+export const getUserResults = createAsyncThunk<MyResultType[], string>(
+  'quizzes/getResults',
+  async (id: string) => {
+    const response = await axiosApi.get<MyResultType[]>(`/quiz/${id}/userresults`);
+    return response.data;
+  },
+);
 
 export const createQuiz = createAsyncThunk<
   void,
@@ -56,7 +64,15 @@ export const createQuiz = createAsyncThunk<
 export const updateQuizRating = createAsyncThunk(
   'quiz/updateRating',
   async ({ rating, user, id }: { rating: number | null; user: string; id: string }) => {
-    const response = await axiosApi.patch('/quiz/' + id + '/rating', { rating, user, quiz: id });
+    const response = await axiosApi.patch('/quiz/' + id + '/rating', { rating, user });
+    return response.data;
+  },
+);
+
+export const updateQuizResult = createAsyncThunk(
+  'quiz/updateResult',
+  async ({ correct, user, id }: { correct: number; user: string; id: string }) => {
+    const response = await axiosApi.patch('/quiz/' + id + '/result', { correct, user });
     return response.data;
   },
 );

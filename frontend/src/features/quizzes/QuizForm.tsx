@@ -18,7 +18,7 @@ import { QuestionDataMutation, QuizDataMutation } from '../../types';
 import { selectUser } from '../users/usersSlice';
 import { createQuiz } from './quizThunk';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { selectCreateQuizLoading } from './quizSlice';
+import { selectCreateQuizError, selectCreateQuizLoading } from './quizSlice';
 import { questionTypes } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 import { enqueueSnackbar } from 'notistack';
@@ -28,6 +28,7 @@ const QuizForm = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const createLoading = useAppSelector(selectCreateQuizLoading);
+  const error = useAppSelector(selectCreateQuizError);
   const navigate = useNavigate();
   const [questionType, setQuestionType] = useState('');
   const [state, setState] = useState<QuizDataMutation>({
@@ -88,6 +89,14 @@ const QuizForm = () => {
     updatedQuestions[questionIndex].options[optionIndex].isCorrect = event.target
       .checked as boolean;
     setQuestions(updatedQuestions);
+  };
+
+  const getFieldError = (fieldName: string) => {
+    try {
+      return error?.errors[fieldName].message;
+    } catch {
+      return undefined;
+    }
   };
 
   const handleAddQuestion = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -167,6 +176,8 @@ const QuizForm = () => {
               value={state.category}
               onChange={inputChangeHandler}
               required
+              error={Boolean(getFieldError('category'))}
+              helperText={getFieldError('category')}
             >
               <MenuItem value="" disabled>
                 Выберите категорию
@@ -188,6 +199,8 @@ const QuizForm = () => {
               onChange={inputChangeHandler}
               name="title"
               required
+              error={Boolean(getFieldError('title'))}
+              helperText={getFieldError('title')}
             />
           </Grid>
           <Grid item xs>

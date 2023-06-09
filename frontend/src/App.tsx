@@ -12,6 +12,7 @@ import { SnackbarProvider } from 'notistack';
 import MyQuizzes from './features/quizzes/MyQuizzes';
 import Home from './features/Home';
 import GameView from './features/quizzes/GameView';
+import MyResults from './features/quizzes/MyResults';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -22,15 +23,12 @@ function App() {
           <Routes>
             <Route element={<Protected user={user} />}>
               <Route path="/create_category" element={<CreateCategory />} />
+              <Route path="/create_quiz" element={<QuizForm />} />
+              <Route path="/myquizresults/:id" element={<MyResults />} />
             </Route>
+            <Route path="/myquizzes/:id" element={<MyQuizzes />} />
             <Route path="/" element={<Home />} />
             <Route path="/quiz/:id" element={<GameView />} />
-            <Route element={<Protected user={user} />}>
-              <Route path="/create_quiz" element={<QuizForm />} />
-            </Route>
-            <Route element={<Protected user={user} />}>
-              <Route path="/myquizzes/:id" element={<MyQuizzes />} />
-            </Route>
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
             <Route path="*" element={'Not found'} />
