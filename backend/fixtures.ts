@@ -107,8 +107,8 @@ const run = async () => {
       quiz: marvel._id,
       text: 'Какой актер сыграл роль Железного человека (Тони Старка) в фильмах Марвел?',
       options: [
-        { variant: 'Роберт Дауни Мл.', isCorrect: true },
         { variant: 'Крис Эванс', isCorrect: false },
+        { variant: 'Роберт Дауни Мл.', isCorrect: true },
         { variant: 'Крис Хемсворт', isCorrect: false },
         { variant: 'Марк Руффало', isCorrect: false },
       ],
@@ -117,9 +117,9 @@ const run = async () => {
       quiz: marvel._id,
       text: 'Какой актер сыграл роль Капитана Америки (Стивена Роджерса) в фильмах Марвел?',
       options: [
-        { variant: 'Крис Эванс', isCorrect: true },
         { variant: 'Роберт Дауни Мл.', isCorrect: false },
         { variant: 'Крис Хемсворт', isCorrect: false },
+        { variant: 'Крис Эванс', isCorrect: true },
         { variant: 'Марк Руффало', isCorrect: false },
       ],
     },
@@ -127,9 +127,9 @@ const run = async () => {
       quiz: marvel._id,
       text: 'Кто сыграл роль Тора в фильмах Марвел?',
       options: [
-        { variant: 'Крис Хемсворт', isCorrect: true },
         { variant: 'Роберт Дауни Мл.', isCorrect: false },
         { variant: 'Крис Эванс', isCorrect: false },
+        { variant: 'Крис Хемсворт', isCorrect: true },
         { variant: 'Марк Руффало', isCorrect: false },
       ],
     },
@@ -137,9 +137,9 @@ const run = async () => {
       quiz: marvel._id,
       text: 'Какой актер сыграл роль Халка (Брюса Бэннера) в фильмах Марвел?',
       options: [
-        { variant: 'Марк Руффало', isCorrect: true },
         { variant: 'Роберт Дауни Мл.', isCorrect: false },
         { variant: 'Крис Эванс', isCorrect: false },
+        { variant: 'Марк Руффало', isCorrect: true },
         { variant: 'Крис Хемсворт', isCorrect: false },
       ],
     },
@@ -147,8 +147,8 @@ const run = async () => {
       quiz: marvel._id,
       text: 'Кто сыграл роль Черной Вдовы (Наташи Романофф) в фильмах Марвел?',
       options: [
-        { variant: 'Скарлетт Йоханссон', isCorrect: true },
         { variant: 'Зои Салдана', isCorrect: false },
+        { variant: 'Скарлетт Йоханссон', isCorrect: true },
         { variant: 'Эмили Блант', isCorrect: false },
         { variant: 'Бри Ларсон', isCorrect: false },
       ],

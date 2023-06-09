@@ -7,8 +7,10 @@ import {
   createQuizService,
   deleteQuizService,
   getAllQuizzesService,
+  getAllUserResultService,
   getQuizByIdService,
   updateQuizRatingService,
+  updateQuizResultService,
 } from '../services/quiz-service';
 import { QuizDataToCreate } from '../types';
 
@@ -70,6 +72,27 @@ export const updateQuizRating: RequestHandler = async (req, res, next) => {
     const { rating, user } = req.body;
     const quiz = await updateQuizRatingService(rating, user, id);
     return res.send({ id: quiz._id, rating: quiz.rating });
+  } catch (e) {
+    next(e);
+  }
+};
+
+export const updateQuizResult: RequestHandler = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const { user, correct } = req.body;
+    const quiz = await updateQuizResultService(correct, user, id);
+    return res.send(quiz);
+  } catch (e) {
+    next(e);
+  }
+};
+
+export const getAllUserResults: RequestHandler = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const results = await getAllUserResultService(id);
+    return res.send(results);
   } catch (e) {
     next(e);
   }

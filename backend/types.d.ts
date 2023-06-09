@@ -63,3 +63,28 @@ export interface QuestionDataCreate {
   text: string;
   options: OptionFormData[];
 }
+
+export interface RatingType {
+  ratingValue: number;
+  user: Types.ObjectId;
+}
+
+export interface ResultType {
+  user: {
+    _id: Types.ObjectId;
+    displayName: string;
+  };
+  correct: number;
+  createdAt: Date;
+}
+
+export interface QuizData {
+  _id: Types.ObjectId;
+  title: string;
+  category: Types.ObjectId;
+  picture: string | null;
+  author: Types.ObjectId;
+  createdAt: Date;
+  rating: RatingType[];
+  result: ResultType[];
+}
