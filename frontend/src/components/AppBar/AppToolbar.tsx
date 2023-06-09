@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectUser } from '../../features/users/usersSlice';
 import { logout } from '../../features/users/usersThunk';
 import Hamburger from '../Hamburger/Hamburger';
-import { Avatar, Tooltip, Zoom } from '@mui/material';
+import { Avatar } from '@mui/material';
 import { noApiURL } from '../../constants';
 import './AppToolbar.scss';
 import ModalBody from '../ModalBody';
@@ -25,8 +25,8 @@ const AppToolbar = () => {
   };
 
   const openDialog = () => {
-    closeHamburger();
     setModalOpen(true);
+    closeHamburger();
   };
 
   const logoutFunc = async () => {
@@ -75,22 +75,15 @@ const AppToolbar = () => {
           </div>
           {user ? (
             <div className="reverse">
-              <Tooltip
-                TransitionComponent={Zoom}
-                disableFocusListener
-                title="Обновить профиль"
-                placement="bottom"
-              >
-                <li className="navigation__greeting" onClick={openDialog}>
-                  {user.avatar && (
-                    <Avatar
-                      alt={user.displayName}
-                      src={user.avatar.startsWith('http') ? user.avatar : noApiURL + user.avatar}
-                    />
-                  )}
-                  Привет {user.displayName}!
-                </li>
-              </Tooltip>
+              <li className="navigation__greeting" onClick={openDialog}>
+                {user.avatar && (
+                  <Avatar
+                    alt={user.displayName}
+                    src={user.avatar.startsWith('http') ? user.avatar : noApiURL + user.avatar}
+                  />
+                )}
+                Привет {user.displayName}!
+              </li>
               <button className="navigation__logout-item" onClick={logoutFunc}>
                 Выйти
               </button>
