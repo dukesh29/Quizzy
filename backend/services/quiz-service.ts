@@ -64,14 +64,18 @@ export const deleteQuizService = async (id: string) => {
   const quiz = await Quiz.findById(id);
 
   if (!quiz) {
-    ApiError.NotFound('Данный квиз не найден!');
-  } else {
-    if (quiz.picture) {
-      await fs.unlink(path.join(config.publicPath + quiz.picture));
-    }
-    await Quiz.findByIdAndDelete(id);
-    await Question.deleteMany({ quiz: id });
+    throw ApiError.NotFound('Данный квиз не найден!');
   }
+
+  if (quiz.picture) {
+    try {
+      await fs.unlink(path.join(config.publicPath + quiz.picture));
+    } catch (e) {
+      throw ApiError.BadRequest('Произошла ошибка при удалении картинки!');
+    }
+  }
+  await Quiz.findByIdAndDelete(id);
+  await Question.deleteMany({ quiz: id });
 };
 
 export const updateQuizRatingService = async (rating: number, user: string, id: string) => {

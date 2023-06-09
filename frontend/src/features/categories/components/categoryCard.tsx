@@ -27,7 +27,7 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
           autoHideDuration: 3000,
         });
       } catch (e) {
-        enqueueSnackbar('Что-то пошло не так!', {
+        enqueueSnackbar('Нельзя удалить данную категорию!', {
           variant: 'error',
           autoHideDuration: 3000,
         });

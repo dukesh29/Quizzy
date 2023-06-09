@@ -33,9 +33,13 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Вы действительно хотите удалить свой квиз?')) {
-      await dispatch(deleteQuiz(id));
-      enqueueSnackbar('Квиз успешно удален! ', { variant: 'success', autoHideDuration: 3000 });
-      await dispatch(getAllQuizzes());
+      try {
+        await dispatch(deleteQuiz(id));
+        enqueueSnackbar('Квиз успешно удален! ', { variant: 'success', autoHideDuration: 3000 });
+        await dispatch(getAllQuizzes());
+      } catch (e) {
+        enqueueSnackbar('Что то пошло не так! ', { variant: 'error', autoHideDuration: 3000 });
+      }
     }
   };
 

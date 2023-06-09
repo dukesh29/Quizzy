@@ -77,6 +77,9 @@ export const updateQuizResult = createAsyncThunk(
   },
 );
 
-export const deleteQuiz = createAsyncThunk<void, string>('quizzes/deleteQuiz', async (id) => {
-  await axiosApi.delete('/quiz/' + id);
-});
+export const deleteQuiz = createAsyncThunk<void, string>(
+  'quizzes/deleteQuiz',
+  async (id: string) => {
+    await axiosApi.delete('/quiz/' + id);
+  },
+);

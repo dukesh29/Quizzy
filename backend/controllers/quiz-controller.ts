@@ -50,7 +50,7 @@ export const createQuiz: RequestHandler = async (req, res, next) => {
 
     const reqData: QuizDataToCreate = {
       ...data,
-      picture: req.file ? 'images/quiz/' + req.file.filename : null,
+      picture: req.file ? '/images/quiz/' + req.file.filename : null,
     };
 
     const oneQuiz = await createQuizService(reqData);
@@ -100,7 +100,8 @@ export const getAllUserResults: RequestHandler = async (req, res, next) => {
 
 export const deleteQuiz: RequestHandler = async (req, res, next) => {
   try {
-    await deleteQuizService(req.params.id);
+    const id = req.params.id;
+    await deleteQuizService(id);
     return res.status(204).send('Квиз успешно удален!');
   } catch (error) {
     next(error);

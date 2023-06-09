@@ -166,7 +166,7 @@ export const updateUser: RequestHandler = async (req, res, next) => {
     }
 
     if (req.file) {
-      const avatar = 'images/avatars/' + req.file.filename;
+      const avatar = '/images/avatars/' + req.file.filename;
       if (user.avatar && user.avatar.includes('images')) {
         await fs.unlink(path.join(config.publicPath, user.avatar));
       }
