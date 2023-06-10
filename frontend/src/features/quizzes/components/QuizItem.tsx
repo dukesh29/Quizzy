@@ -13,13 +13,15 @@ import {
 import { QuizData } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { noApiURL } from '../../../constants';
+import { clientURL, noApiURL } from '../../../constants';
 import { selectUser } from '../../users/usersSlice';
 import dayjs from 'dayjs';
 import { deleteQuiz, getAllQuizzes } from '../quizThunk';
 import { selectDeleteQuizLoading } from '../quizSlice';
 import { enqueueSnackbar } from 'notistack';
 import RatingCard from './RatingCard';
+import ShareSocial from './ShareSocial';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface QuizCardProps {
   quiz: QuizData;
@@ -113,10 +115,12 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
             Author: {quiz.author.displayName}
           </Link>
         </CardContent>
-        <CardActions sx={{ display: 'flex', alignItems: 'flex-end', marginTop: 'auto' }}>
+        <CardActions
+          sx={{ display: 'flex', justifyContent: 'center', marginTop: 'auto', gap: '10px' }}
+        >
           <Button
             size="small"
-            sx={{ mx: 'auto', color: '#776BCC', border: '1px solid #776BCC' }}
+            sx={{ color: '#776BCC', border: '1px solid #776BCC' }}
             variant="outlined"
             onClick={() => startQuiz(quiz._id)}
           >
@@ -125,14 +129,18 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
           {user && (user._id === quiz.author._id || user.role === 'admin') && (
             <Button
               size="small"
-              sx={{ mx: 'auto', color: '#776BCC', border: '1px solid #776BCC' }}
+              sx={{ color: '#776BCC', border: '1px solid #776BCC', ml: 0 }}
               variant="outlined"
               onClick={() => handleDelete(quiz._id)}
               disabled={deleteLoading}
             >
-              {deleteLoading ? <CircularProgress color="secondary" size="small" /> : 'Удалить'}
+              {deleteLoading ? <CircularProgress color="secondary" size="small" /> : <DeleteIcon />}
             </Button>
           )}
+          <ShareSocial
+            url={clientURL + '/quiz/' + quiz._id}
+            title={'Cыграй в квиз на тему: ' + quiz.title}
+          />
         </CardActions>
       </Card>
     </>

@@ -88,7 +88,8 @@ $headerBorderRadius: 10px;
     cursor: pointer;
 
     &:hover {
-      background-color: #a69a9a;
+      background-color: $black;
+      color: $white;
     }
   }
 
@@ -103,7 +104,8 @@ $headerBorderRadius: 10px;
     border: none;
 
     &:hover {
-      transform: scale(110%);
+      background-color: $black;
+      color: $white;
     }
   }
 
