@@ -31,20 +31,39 @@ const QuizForm = () => {
   const error = useAppSelector(selectCreateQuizError);
   const navigate = useNavigate();
   const [questionType, setQuestionType] = useState('');
-  const [state, setState] = useState<QuizDataMutation>({
-    category: '',
-    title: '',
-    author: user && user._id,
-    picture: null,
+
+  const [state, setState] = useState<QuizDataMutation>(() => {
+    const saved = localStorage.getItem('quizData');
+    return saved
+      ? JSON.parse(saved)
+      : {
+          category: '',
+          title: '',
+          author: user && user._id,
+          picture: null,
+        };
   });
 
-  const [questions, setQuestions] = useState<QuestionDataMutation[]>([]);
+  const [questions, setQuestions] = useState<QuestionDataMutation[]>(() => {
+    const saved = localStorage.getItem('questionData');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   const categories = useAppSelector(selectCategoriesList);
 
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
+
+  useEffect(() => {
+    localStorage.setItem('quizData', JSON.stringify(state));
+    localStorage.setItem('questionData', JSON.stringify(questions));
+  }, [state, questions]);
+
+  useEffect(() => {
+    localStorage.removeItem('quizData');
+    localStorage.removeItem('questionData');
+  }, []);
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

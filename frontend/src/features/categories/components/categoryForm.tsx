@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { createCategory, fetchCategories } from '../categoryThunk';
 import { selectCategoryError, selectCreateCategoryLoading } from '../categorySlice';
@@ -9,7 +9,18 @@ const CategoryForm = () => {
   const dispatch = useAppDispatch();
   const loading = useAppSelector(selectCreateCategoryLoading);
   const error = useAppSelector(selectCategoryError);
-  const [categoryName, setCategoryName] = useState('');
+  const [categoryName, setCategoryName] = useState(() => {
+    const saved = localStorage.getItem('categoryData');
+    return saved ? JSON.parse(saved) : '';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('categoryData', JSON.stringify(categoryName));
+  }, [categoryName]);
+
+  useEffect(() => {
+    localStorage.removeItem('categoryData');
+  }, []);
 
   const handleCategoryNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategoryName(e.target.value);
