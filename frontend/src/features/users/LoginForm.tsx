@@ -12,8 +12,9 @@ import { login } from './usersThunk';
 import { selectLoginError, selectLoginLoading } from './usersSlice';
 import { CircularProgress } from '@mui/material';
 import SocialSiteLogin from './components/SocialSiteLogin';
-import './styles/LoginForm.scss';
 import { enqueueSnackbar } from 'notistack';
+import useFormPersist from 'react-hook-form-persist';
+import './styles/LoginForm.scss';
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -25,10 +26,19 @@ const LoginForm = () => {
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors, isValid },
   } = useForm<LoginMutation>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
+  });
+
+  useFormPersist('loginForm', {
+    watch,
+    setValue,
+    storage: window.localStorage,
+    exclude: ['password'],
   });
 
   const [isVisible, setIsVisible] = useState(false);

@@ -16,6 +16,7 @@ import SocialSiteLogin from './components/SocialSiteLogin';
 import './styles/RegisterForm.scss';
 import { enqueueSnackbar } from 'notistack';
 import FileInput from '../../components/FileInput/FileInput';
+import useFormPersist from 'react-hook-form-persist';
 
 const RegisterForm = () => {
   const dispatch = useAppDispatch();
@@ -29,10 +30,19 @@ const RegisterForm = () => {
     setError,
     reset,
     control,
+    watch,
+    setValue,
     formState: { errors, isValid },
   } = useForm<UserMutation>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
+  });
+
+  useFormPersist('registerForm', {
+    watch,
+    setValue,
+    storage: window.localStorage,
+    exclude: ['password', 'avatar'],
   });
 
   const [isVisible, setIsVisible] = useState(false);
